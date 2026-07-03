@@ -1,0 +1,129 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import Social from '../components/Social.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = `${site.name} — ${site.role}`,
+  description = 'AI/ML researcher studying Trustworthy and Responsible AI at École Polytechnique (IP Paris). Research in physics-informed deep learning, NLP, optimization, and responsible AI.',
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <Nav />
+
+    <!-- fixed side rails (desktop only) -->
+    <div class="rail rail-left" aria-hidden="false">
+      <Social />
+    </div>
+    <div class="rail rail-right">
+      <a class="rail-email mono" href={`mailto:${site.email}`}>{site.email}</a>
+    </div>
+
+    <main id="content">
+      <slot />
+    </main>
+
+    <Footer />
+
+    <script>
+      // Scroll-reveal, honoring prefers-reduced-motion.
+      const els = document.querySelectorAll('.reveal');
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduced) {
+        els.forEach((el) => el.classList.add('visible'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.1 }
+        );
+        els.forEach((el) => io.observe(el));
+      }
+    </script>
+
+    <style>
+      main {
+        padding-top: 96px;
+        min-height: 70vh;
+      }
+
+      .rail {
+        position: fixed;
+        bottom: 0;
+        z-index: 5;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--space-lg);
+      }
+
+      .rail::after {
+        content: '';
+        display: block;
+        width: 1px;
+        height: 90px;
+        background: var(--muted);
+      }
+
+      .rail-left {
+        left: 40px;
+      }
+
+      .rail-right {
+        right: 40px;
+      }
+
+      .rail-email {
+        color: var(--muted);
+        writing-mode: vertical-rl;
+        font-size: 0.75rem;
+        letter-spacing: 0.1em;
+        transition: color var(--transition), transform var(--transition);
+      }
+
+      .rail-email:hover {
+        color: var(--accent);
+        transform: translateY(-4px);
+        text-decoration: none;
+      }
+
+      @media (min-width: 1080px) {
+        .rail {
+          display: flex;
+        }
+      }
+    </style>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+---
+import { STATUS_LABELS } from '../data/site';
+
+const { paper } = Astro.props;
+const d = paper.data;
+---
+
+<article class="card reveal">
+  <div class="venue mono">{d.venue}{d.year ? ` · ${d.year}` : ''}</div>
+  <h3><a href={`/papers/${paper.id}/`}>{d.title}</a></h3>
+  <p>{d.summary}</p>
+  <div class="tag-row badges">
+    <span class="badge">{d.role}</span>
+    {d.status !== 'published' && <span class="badge">{STATUS_LABELS[d.status]}</span>}
+    {d.award && <span class="badge">{d.award}</span>}
+  </div>
+  <div class="tag-row">
+    {d.tags.map((t: string) => <span class="tag">{t}</span>)}
+  </div>
+  <div class="actions">
+    <a class="action mono" href={`/papers/${paper.id}/`}>Details →</a>
+    <div class="action-ext">
+      {d.doi && <a class="action mono" href={d.doi} target="_blank" rel="noopener">Paper ↗</a>}
+      {d.github && <a class="action mono" href={d.github} target="_blank" rel="noopener">Code ↗</a>}
+    </div>
+  </div>
+</article>
+
+<style>
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--rounded-md);
+    padding: var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    transition: transform var(--transition), border-color var(--transition);
+  }
+
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+  }
+
+  .venue {
+    color: var(--accent);
+    font-size: 0.72rem;
+    margin-bottom: var(--space-sm);
+  }
+
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  h3 a {
+    color: var(--heading);
+    transition: color var(--transition);
+  }
+
+  h3 a:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  p {
+    color: var(--muted);
+    font-size: 0.875rem;
+    margin-top: var(--space-sm);
+    flex: 1;
+  }
+
+  .badges {
+    margin-top: var(--space-md);
+  }
+
+  .tag-row {
+    margin-top: var(--space-md);
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+  }
+
+  .action-ext {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .action {
+    font-size: 0.7rem;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: var(--rounded-sm);
+    padding: 6px 10px;
+    transition: color var(--transition), border-color var(--transition);
+  }
+
+  .action:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    text-decoration: none;
+  }
+</style>

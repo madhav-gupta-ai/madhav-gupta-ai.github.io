@@ -1,0 +1,156 @@
+---
+import { site } from '../data/site';
+
+const links = [
+  { n: '01', label: 'About', href: '/#about' },
+  { n: '02', label: 'Experience', href: '/#experience' },
+  { n: '03', label: 'Research', href: '/#research' },
+  { n: '04', label: 'Projects', href: '/#projects' },
+  { n: '05', label: 'Writing', href: '/blog' },
+  { n: '06', label: 'Contact', href: '/#contact' },
+];
+---
+
+<header class="site-nav" id="site-nav">
+  <nav class="container nav-inner" aria-label="Primary">
+    <a class="logo mono" href="/" aria-label="Home">~/mg</a>
+
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+
+    <div class="nav-menu" id="nav-menu">
+      {
+        links.map((l) => (
+          <a class="nav-link mono" href={l.href}>
+            <span class="num">{l.n}.</span> {l.label}
+          </a>
+        ))
+      }
+      <a class="btn resume-btn" href={site.resume} target="_blank" rel="noopener">Resume</a>
+    </div>
+  </nav>
+</header>
+
+<script>
+  const header = document.getElementById('site-nav');
+  const toggle = document.querySelector('.nav-toggle');
+  const menu = document.getElementById('nav-menu');
+
+  toggle?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(!!open));
+  });
+
+  menu?.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => {
+      menu.classList.remove('open');
+      toggle?.setAttribute('aria-expanded', 'false');
+    })
+  );
+
+  window.addEventListener(
+    'scroll',
+    () => header?.classList.toggle('scrolled', window.scrollY > 20),
+    { passive: true }
+  );
+</script>
+
+<style>
+  .site-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background: rgba(10, 25, 47, 0.85);
+    backdrop-filter: blur(10px);
+    transition: box-shadow var(--transition);
+  }
+
+  .site-nav.scrolled {
+    box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+
+  .logo {
+    color: var(--accent);
+    font-size: 1rem;
+    font-weight: 600;
+    transition: transform var(--transition);
+  }
+
+  .logo:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+  }
+
+  .nav-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--accent);
+    cursor: pointer;
+    padding: var(--space-sm);
+  }
+
+  .nav-menu {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  .nav-link {
+    color: var(--text);
+    font-size: 0.78rem;
+    transition: color var(--transition);
+  }
+
+  .nav-link:hover {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .nav-link .num {
+    color: var(--accent);
+  }
+
+  .resume-btn {
+    padding: 10px 16px;
+    font-size: 0.78rem;
+  }
+
+  @media (max-width: 920px) {
+    .nav-toggle {
+      display: block;
+    }
+
+    .nav-menu {
+      display: none;
+      position: absolute;
+      top: 72px;
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-md);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: var(--space-lg);
+    }
+
+    .nav-menu.open {
+      display: flex;
+    }
+  }
+</style>

@@ -1,0 +1,35 @@
+---
+import Social from './Social.astro';
+import { site } from '../data/site';
+---
+
+<footer class="footer">
+  <div class="footer-social">
+    <Social />
+  </div>
+  <div class="credit mono">Designed &amp; built by {site.name}</div>
+</footer>
+
+<style>
+  .footer {
+    text-align: center;
+    padding: var(--space-xl) var(--space-lg);
+  }
+
+  .footer-social {
+    display: block;
+    margin-bottom: var(--space-md);
+  }
+
+  .credit {
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+
+  @media (min-width: 1080px) {
+    /* side rails cover socials on desktop */
+    .footer-social {
+      display: none;
+    }
+  }
+</style>

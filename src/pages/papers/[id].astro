@@ -1,0 +1,103 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+import { STATUS_LABELS } from '../../data/site';
+
+export async function getStaticPaths() {
+  const papers = await getCollection('papers');
+  return papers.map((paper) => ({
+    params: { id: paper.id },
+    props: { paper },
+  }));
+}
+
+const { paper } = Astro.props;
+const d = paper.data;
+const { Content } = await render(paper);
+---
+
+<Base title={`${d.title} — Madhav Gupta`} description={d.summary}>
+  <div class="container">
+    <article class="detail">
+      <p class="back"><a class="mono" href="/research">← All publications</a></p>
+      <p class="venue mono">
+        {d.venue}{d.year ? ` · ${d.year}` : ''} · {STATUS_LABELS[d.status]}
+      </p>
+      <h1>{d.title}</h1>
+      <div class="tag-row meta">
+        <span class="badge">{d.role}</span>
+        {d.award && <span class="badge">{d.award}</span>}
+        {d.tags.map((t: string) => <span class="tag">{t}</span>)}
+      </div>
+      {
+        (d.doi || d.github || d.pdf) && (
+          <div class="actions">
+            {d.doi && <a class="action mono" href={d.doi} target="_blank" rel="noopener">Paper ↗</a>}
+            {d.github && <a class="action mono" href={d.github} target="_blank" rel="noopener">Code ↗</a>}
+            {d.pdf && <a class="action mono" href={d.pdf} target="_blank" rel="noopener">PDF ↗</a>}
+          </div>
+        )
+      }
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .detail {
+    max-width: 760px;
+    padding: var(--space-xl) 0 var(--space-xxl);
+  }
+
+  .back {
+    margin-bottom: var(--space-xl);
+  }
+
+  .back a {
+    font-size: 0.8rem;
+  }
+
+  .venue {
+    color: var(--accent);
+    font-size: 0.78rem;
+    margin-bottom: var(--space-md);
+  }
+
+  h1 {
+    font-size: clamp(28px, 4.5vw, 40px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  .meta {
+    align-items: center;
+    margin: var(--space-md) 0;
+  }
+
+  .actions {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .action {
+    font-size: 0.7rem;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: var(--rounded-sm);
+    padding: 6px 10px;
+    transition: color var(--transition), border-color var(--transition);
+  }
+
+  .action:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    text-decoration: none;
+  }
+
+  .prose {
+    margin-top: var(--space-xl);
+  }
+</style>

@@ -1,0 +1,25 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# environment
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# AI-agent / tooling files (local only, not part of the published site)
+CLAUDE.md
+.claude/
+.agents/
+skills-lock.json
+docs/
+.playwright-mcp/
+
+# personal source material (site pulls what it needs from public/)
+about_me/

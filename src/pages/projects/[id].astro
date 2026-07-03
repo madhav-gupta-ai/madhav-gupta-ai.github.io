@@ -1,0 +1,95 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({
+    params: { id: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const d = project.data;
+const { Content } = await render(project);
+---
+
+<Base title={`${d.title} — Madhav Gupta`} description={d.summary}>
+  <div class="container">
+    <article class="detail">
+      <p class="back"><a class="mono" href="/#projects">← All projects</a></p>
+      <p class="kicker mono">Project</p>
+      <h1>{d.title}</h1>
+      <div class="tag-row meta">
+        {d.tags.map((t: string) => <span class="tag">{t}</span>)}
+      </div>
+      {
+        d.github && (
+          <div class="actions">
+            <a class="action mono" href={d.github} target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        )
+      }
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .detail {
+    max-width: 760px;
+    padding: var(--space-xl) 0 var(--space-xxl);
+  }
+
+  .back {
+    margin-bottom: var(--space-xl);
+  }
+
+  .back a {
+    font-size: 0.8rem;
+  }
+
+  .kicker {
+    color: var(--accent);
+    font-size: 0.78rem;
+    margin-bottom: var(--space-md);
+  }
+
+  h1 {
+    font-size: clamp(28px, 4.5vw, 40px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  .meta {
+    margin: var(--space-md) 0;
+  }
+
+  .actions {
+    display: flex;
+    gap: var(--space-sm);
+  }
+
+  .action {
+    font-size: 0.7rem;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: var(--rounded-sm);
+    padding: 6px 10px;
+    transition: color var(--transition), border-color var(--transition);
+  }
+
+  .action:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    text-decoration: none;
+  }
+
+  .prose {
+    margin-top: var(--space-xl);
+  }
+</style>

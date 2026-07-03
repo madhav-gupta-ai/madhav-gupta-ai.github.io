@@ -1,0 +1,60 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts
+    .filter((p) => !p.data.draft)
+    .map((post) => ({
+      params: { id: post.id },
+      props: { post },
+    }));
+}
+
+const { post } = Astro.props;
+const d = post.data;
+const { Content } = await render(post);
+---
+
+<Base title={`${d.title} — Madhav Gupta`} description={d.description}>
+  <div class="container">
+    <article class="detail">
+      <p class="back"><a class="mono" href="/blog">← All posts</a></p>
+      <p class="date mono">{d.date.toISOString().slice(0, 10)}</p>
+      <h1>{d.title}</h1>
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+  </div>
+</Base>
+
+<style>
+  .detail {
+    max-width: 760px;
+    padding: var(--space-xl) 0 var(--space-xxl);
+  }
+
+  .back {
+    margin-bottom: var(--space-xl);
+  }
+
+  .back a {
+    font-size: 0.8rem;
+  }
+
+  .date {
+    color: var(--accent);
+    font-size: 0.78rem;
+    margin-bottom: var(--space-md);
+  }
+
+  h1 {
+    font-size: clamp(28px, 4.5vw, 40px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+    margin-bottom: var(--space-xl);
+  }
+</style>

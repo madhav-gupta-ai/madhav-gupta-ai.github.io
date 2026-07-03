@@ -1,0 +1,44 @@
+---
+interface Props {
+  num: string;
+  title: string;
+}
+const { num, title } = Astro.props;
+---
+
+<h2 class="section-heading reveal">
+  <span class="num mono">{num}.</span>
+  <span class="title">{title}</span>
+  <span class="rule" aria-hidden="true"></span>
+</h2>
+
+<style>
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: var(--space-xl);
+  }
+
+  .num {
+    color: var(--accent);
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+
+  .rule {
+    height: 1px;
+    background: var(--border);
+    flex: 1;
+    max-width: 300px;
+    margin-left: var(--space-sm);
+  }
+
+  @media (max-width: 600px) {
+    .section-heading {
+      font-size: 1.4rem;
+    }
+  }
+</style>

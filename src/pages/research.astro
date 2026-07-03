@@ -1,0 +1,157 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { STATUS_LABELS } from '../data/site';
+
+const all = await getCollection('papers');
+const groups = [
+  { key: 'published', label: 'Published' },
+  { key: 'in-press', label: 'In Press & Accepted' },
+  { key: 'under-review', label: 'Under Review' },
+].map((g) => ({
+  ...g,
+  papers: all
+    .filter((p) => p.data.status === g.key)
+    .sort((a, b) => a.data.order - b.data.order),
+}));
+---
+
+<Base title="Research — Madhav Gupta">
+  <div class="container">
+    <header class="page-head">
+      <p class="mono kicker">03. Research</p>
+      <h1>Publications</h1>
+      <p class="lead">
+        First-author and co-author work across conferences and journals in machine
+        learning, NLP, optimization, and applied AI.
+      </p>
+    </header>
+
+    {
+      groups.map(
+        (g) =>
+          g.papers.length > 0 && (
+            <section class="group">
+              <h2 class="mono">{g.label}</h2>
+              {g.papers.map((p) => (
+                <a class="row reveal" href={`/papers/${p.id}/`}>
+                  <div>
+                    <div class="row-title">{p.data.title}</div>
+                    <div class="row-venue mono">
+                      {p.data.venue}
+                      {p.data.year ? ` · ${p.data.year}` : ''}
+                    </div>
+                    <div class="tag-row">
+                      <span class="badge">{p.data.role}</span>
+                      {p.data.award && <span class="badge">{p.data.award}</span>}
+                      {p.data.tags.map((t: string) => (
+                        <span class="tag">{t}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <span class="arrow mono" aria-hidden="true">→</span>
+                </a>
+              ))}
+            </section>
+          )
+      )
+    }
+
+    <p class="back"><a class="mono" href="/">← Back home</a></p>
+  </div>
+</Base>
+
+<style>
+  .page-head {
+    max-width: 680px;
+    padding: var(--space-xl) 0 var(--space-xxl);
+  }
+
+  .kicker {
+    color: var(--accent);
+    margin-bottom: var(--space-sm);
+  }
+
+  h1 {
+    font-size: clamp(32px, 5vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .lead {
+    color: var(--muted);
+    margin-top: var(--space-md);
+  }
+
+  .group {
+    margin-bottom: var(--space-xxl);
+  }
+
+  .group h2 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border-bottom: 1px solid var(--border);
+    padding-bottom: var(--space-sm);
+    margin-bottom: var(--space-md);
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-lg);
+    padding: var(--space-lg) var(--space-md);
+    margin: 0 calc(-1 * var(--space-md));
+    border-radius: var(--rounded-md);
+    color: inherit;
+    transition: background var(--transition);
+  }
+
+  .row:hover {
+    background: var(--surface);
+    text-decoration: none;
+  }
+
+  .row-title {
+    color: var(--heading);
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .row:hover .row-title {
+    color: var(--accent);
+  }
+
+  .row-venue {
+    color: var(--muted);
+    font-size: 0.72rem;
+    margin-top: var(--space-xs);
+  }
+
+  .tag-row {
+    margin-top: var(--space-sm);
+    align-items: center;
+  }
+
+  .arrow {
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: color var(--transition), transform var(--transition);
+  }
+
+  .row:hover .arrow {
+    color: var(--accent);
+    transform: translateX(4px);
+  }
+
+  .back {
+    padding-bottom: var(--space-xxl);
+  }
+
+  .back a {
+    font-size: 0.8rem;
+  }
+</style>

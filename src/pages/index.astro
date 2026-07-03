@@ -1,0 +1,490 @@
+---
+import Base from '../layouts/Base.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import PaperCard from '../components/PaperCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getCollection } from 'astro:content';
+import { site } from '../data/site';
+
+const papers = (await getCollection('papers'))
+  .filter((p) => p.data.featured)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const projects = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const experience = [
+  {
+    role: 'AI & Deep Learning Research Intern',
+    org: 'Michelin — Exploration Team, Industry 4.0',
+    where: 'Clermont-Ferrand, France',
+    dates: 'Mar 2026 – Present',
+    points: [
+      'Exploring geometric deep learning strategies for mechanical design optimization within an industrial R&D setting.',
+    ],
+  },
+  {
+    role: 'Machine Learning Research Intern',
+    org: 'Centre for Interdisciplinary AI, FLAME University',
+    where: 'Pune, India',
+    dates: 'Sep 2024 – Feb 2025',
+    points: [
+      'Led four first-author research papers, two accepted at ICDMAI and ICE; co-authored six-plus additional publications.',
+      'Designed end-to-end ML pipelines, optimized deep learning models, and ran large-scale experimental simulations.',
+    ],
+  },
+  {
+    role: 'Student Research Assistant',
+    org: 'FLAME University — Dept. of Computing and Data Sciences',
+    where: 'Pune, India',
+    dates: 'Sep 2023 – Dec 2023',
+    points: [
+      'Analyzed ML-driven Local Climate Zone classification for Urban Heat Islands in India and proposed context-aware CNN architectures over traditional classifiers.',
+    ],
+  },
+  {
+    role: 'AI & Machine Learning Intern',
+    org: 'Wadhwani AI — Integrated Disease Surveillance Program',
+    where: 'Delhi, India',
+    dates: 'Jun 2023 – Aug 2023',
+    points: [
+      'Enhanced AI-driven disease-surveillance pipelines with multilingual NLP for Indic languages.',
+      'Proposed outbreak-detection methodologies improving detection by up to 108% while reducing latency by 35%.',
+    ],
+  },
+  {
+    role: 'Research Intern',
+    org: 'Bandi Research Group, University of Alabama',
+    where: 'Alabama, USA',
+    dates: 'May 2022 – Jul 2022',
+    points: [
+      'Implemented a GNSS-based geolocation algorithm for satellite positioning, validated against IISc GNSS station data.',
+    ],
+  },
+];
+
+const skills = [
+  'Python',
+  'PyTorch',
+  'TensorFlow',
+  'scikit-learn',
+  'Hugging Face',
+  'CUDA',
+  'Docker',
+  'AWS',
+];
+---
+
+<Base>
+  <div class="container">
+    <!-- ============ HERO ============ -->
+    <section class="hero">
+      <p class="kicker mono reveal visible">Hi, my name is</p>
+      <h1 class="reveal visible">{site.name}.</h1>
+      <p class="hero-sub reveal visible">{site.tagline}</p>
+      <p class="hero-blurb reveal visible">
+        I'm an AI/ML researcher and master's student in Trustworthy and Responsible AI
+        at École Polytechnique (IP Paris), currently exploring geometric deep learning
+        for mechanical design optimization at Michelin.
+      </p>
+      <div class="hero-cta reveal visible">
+        <a class="btn btn-lg" href="#research">Check out my research</a>
+      </div>
+    </section>
+
+    <!-- ============ ABOUT ============ -->
+    <section id="about" class="section">
+      <SectionHeading num="01" title="About Me" />
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p>
+            I'm a master's student in Trustworthy and Responsible AI at École
+            Polytechnique (IP Paris) and an AI/ML researcher with first-author and
+            co-author publications across international conferences and journals. My
+            work spans deep learning, NLP, recommendation systems, physics-informed
+            and geometric deep learning, and optimization.
+          </p>
+          <p>
+            I've carried out research across academic labs, industry AI teams, and
+            government-backed initiatives — applying machine learning to computational
+            psychology, healthcare and disease surveillance, geospatial and climate
+            modeling, industrial process optimization, and satellite navigation.
+          </p>
+          <p>
+            Alongside the technical work, I have a sustained interest in AI ethics and
+            responsible deployment — transparency, fairness, and the societal impact
+            of the systems being built.
+          </p>
+          <p>Technologies I work with regularly:</p>
+          <ul class="skills mono">
+            {skills.map((s) => <li>{s}</li>)}
+          </ul>
+        </div>
+        <div class="portrait reveal">
+          <img
+            src="/images/portrait.jpg"
+            alt="Portrait of Madhav Gupta"
+            width="743"
+            height="743"
+            loading="eager"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ EXPERIENCE ============ -->
+    <section id="experience" class="section">
+      <SectionHeading num="02" title="Experience" />
+      <div class="exp-list">
+        {
+          experience.map((e) => (
+            <article class="exp reveal">
+              <div class="exp-dates mono">{e.dates}</div>
+              <div class="exp-body">
+                <h3>
+                  {e.role} <span class="exp-org">@ {e.org}</span>
+                </h3>
+                <div class="exp-where mono">{e.where}</div>
+                <ul>
+                  {e.points.map((pt) => (
+                    <li>{pt}</li>
+                  ))}
+                </ul>
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ============ RESEARCH ============ -->
+    <section id="research" class="section">
+      <SectionHeading num="03" title="Selected Research" />
+      <div class="card-grid">
+        {papers.map((paper) => <PaperCard paper={paper} />)}
+      </div>
+      <p class="section-more reveal">
+        <a class="mono" href="/research">View the full publication list →</a>
+      </p>
+    </section>
+
+    <!-- ============ PROJECTS ============ -->
+    <section id="projects" class="section">
+      <SectionHeading num="04" title="Things I've Built" />
+      <div class="card-grid">
+        {projects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </section>
+
+    <!-- ============ WRITING ============ -->
+    <section id="writing" class="section">
+      <SectionHeading num="05" title="Writing" />
+      <div class="post-list">
+        {
+          posts.map((post) => (
+            <a class="post-row reveal" href={`/blog/${post.id}/`}>
+              <span class="post-date mono">
+                {post.data.date.toISOString().slice(0, 10)}
+              </span>
+              <span class="post-title">{post.data.title}</span>
+            </a>
+          ))
+        }
+      </div>
+      <p class="section-more reveal">
+        <a class="mono" href="/blog">All posts →</a>
+      </p>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section id="contact" class="section contact">
+      <p class="kicker mono reveal">06. What's Next?</p>
+      <h2 class="reveal">Get In Touch</h2>
+      <p class="contact-blurb reveal">
+        I'm currently open to internship and research opportunities in AI/ML. Whether
+        you have a role in mind, a potential collaboration, or just want to say hi, my
+        inbox is open.
+      </p>
+      <a class="btn btn-lg reveal" href={`mailto:${site.email}`}>Say Hello</a>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .hero {
+    min-height: calc(85vh - 96px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: var(--space-xxl) 0;
+  }
+
+  .kicker {
+    color: var(--accent);
+    margin-bottom: var(--space-md);
+  }
+
+  .hero h1 {
+    font-size: clamp(40px, 7vw, 64px);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+
+  .hero-sub {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 700;
+    color: var(--muted);
+    line-height: 1.1;
+    margin-top: var(--space-xs);
+  }
+
+  .hero-blurb {
+    max-width: 540px;
+    margin-top: var(--space-lg);
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.65;
+  }
+
+  .hero-cta {
+    margin-top: var(--space-xl);
+  }
+
+  .section {
+    padding: var(--space-xxl) 0;
+  }
+
+  /* about */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: var(--space-xl);
+    align-items: start;
+  }
+
+  .about-text p + p {
+    margin-top: var(--space-md);
+  }
+
+  .about-text p:nth-last-child(2) {
+    margin-top: var(--space-lg);
+  }
+
+  .skills {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(140px, 200px));
+    gap: var(--space-sm) var(--space-md);
+    margin-top: var(--space-md);
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+
+  .skills li::before {
+    content: '▹ ';
+    color: var(--accent);
+  }
+
+  .portrait {
+    position: relative;
+    max-width: 300px;
+    margin: var(--space-md) auto 0;
+  }
+
+  .portrait img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: var(--rounded-md);
+    filter: grayscale(30%);
+    transition: filter var(--transition);
+  }
+
+  .portrait::before {
+    content: '';
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    width: 100%;
+    height: 100%;
+    border: 2px solid var(--accent);
+    border-radius: var(--rounded-md);
+    z-index: -1;
+    transition: transform var(--transition);
+  }
+
+  .portrait::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--rounded-md);
+    box-shadow: inset 0 0 36px 6px rgba(100, 255, 218, 0.25);
+    pointer-events: none;
+    transition: opacity var(--transition);
+  }
+
+  .portrait:hover img {
+    filter: none;
+  }
+
+  .portrait:hover::after {
+    opacity: 0;
+  }
+
+  .portrait:hover::before {
+    transform: translate(-6px, -6px);
+  }
+
+  /* experience */
+  .exp-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    max-width: 820px;
+  }
+
+  .exp {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: var(--space-lg);
+  }
+
+  .exp-dates {
+    color: var(--muted);
+    font-size: 0.72rem;
+    padding-top: 5px;
+  }
+
+  .exp h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .exp-org {
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .exp-where {
+    color: var(--muted);
+    font-size: 0.72rem;
+    margin-top: var(--space-xs);
+  }
+
+  .exp ul {
+    list-style: none;
+    margin-top: var(--space-sm);
+  }
+
+  .exp li {
+    color: var(--muted);
+    font-size: 0.9rem;
+    padding-left: var(--space-lg);
+    position: relative;
+    margin-top: var(--space-sm);
+  }
+
+  .exp li::before {
+    content: '▹';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+  }
+
+  /* cards */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-lg);
+  }
+
+  .section-more {
+    margin-top: var(--space-lg);
+  }
+
+  .section-more a {
+    font-size: 0.8rem;
+  }
+
+  /* writing */
+  .post-list {
+    display: flex;
+    flex-direction: column;
+    max-width: 680px;
+  }
+
+  .post-row {
+    display: flex;
+    align-items: baseline;
+    gap: var(--space-lg);
+    padding: var(--space-md) 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--heading);
+    transition: color var(--transition);
+  }
+
+  .post-row:hover {
+    text-decoration: none;
+    color: var(--accent);
+  }
+
+  .post-date {
+    color: var(--muted);
+    font-size: 0.72rem;
+    flex-shrink: 0;
+  }
+
+  .post-title {
+    font-weight: 600;
+  }
+
+  /* contact */
+  .contact {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+    padding-bottom: var(--space-xxxl);
+  }
+
+  .contact .kicker {
+    margin-bottom: var(--space-sm);
+  }
+
+  .contact h2 {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+  }
+
+  .contact-blurb {
+    color: var(--muted);
+    margin: var(--space-md) 0 var(--space-xl);
+  }
+
+  @media (max-width: 768px) {
+    .about-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .portrait {
+      margin: var(--space-lg) auto 0;
+      max-width: 260px;
+    }
+
+    .exp {
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+    }
+
+    .card-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
