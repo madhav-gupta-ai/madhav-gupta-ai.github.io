@@ -1,0 +1,108 @@
+---
+// Chip-style keyword filter. Topics derive from item tags on the page.
+// Cards must be wrapped in .filter-item elements carrying data-tags="a|b|c".
+interface Props {
+  tags: string[];
+}
+const { tags } = Astro.props;
+---
+
+<div class="filter-bar" role="toolbar" aria-label="Filter by topic">
+  <button class="chip mono active" data-filter="all" aria-pressed="true">All</button>
+  {
+    tags.map((t) => (
+      <button class="chip mono" data-filter={t} aria-pressed="false">
+        {t}
+      </button>
+    ))
+  }
+</div>
+
+<script>
+  const bar = document.querySelector('.filter-bar');
+  const items = [...document.querySelectorAll('.filter-item')] as HTMLElement[];
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  bar?.addEventListener('click', (e) => {
+    const chip = (e.target as HTMLElement).closest('.chip') as HTMLElement | null;
+    if (!chip || chip.classList.contains('active')) return;
+
+    const chips = [...bar.querySelectorAll('.chip')] as HTMLElement[];
+    const allChip = chips.find((c) => c.dataset.filter === 'all')!;
+    const filter = chip.dataset.filter;
+
+    // FLIP: record positions, reorder (active chip slides in right after "All"),
+    // then animate each chip from its old position to its new one.
+    const prevRects = new Map(chips.map((c) => [c, c.getBoundingClientRect()]));
+    chips.forEach((c) => {
+      c.classList.toggle('active', c === chip);
+      c.setAttribute('aria-pressed', String(c === chip));
+    });
+    if (chip !== allChip) bar.insertBefore(chip, allChip.nextSibling);
+
+    if (!reduced) {
+      chips.forEach((c) => {
+        const prev = prevRects.get(c)!;
+        const now = c.getBoundingClientRect();
+        const dx = prev.left - now.left;
+        const dy = prev.top - now.top;
+        if (dx || dy) {
+          c.animate(
+            [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: 'translate(0, 0)' }],
+            { duration: 350, easing: 'cubic-bezier(0.22, 0.9, 0.36, 1)' }
+          );
+        }
+      });
+    }
+
+    // Filter the cards, with a gentle pop-in for the survivors.
+    items.forEach((it) => {
+      const itemTags = (it.dataset.tags || '').split('|');
+      const show = filter === 'all' || itemTags.includes(filter!);
+      it.classList.toggle('hidden', !show);
+      if (show && !reduced) {
+        it.classList.remove('pop');
+        void it.offsetWidth; // restart the animation
+        it.classList.add('pop');
+      }
+    });
+  });
+</script>
+
+<style>
+  .filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
+  }
+
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--rounded-sm);
+    padding: 8px 14px;
+    cursor: pointer;
+    transition:
+      color var(--transition),
+      border-color var(--transition),
+      background var(--transition),
+      transform var(--transition);
+  }
+
+  .chip:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .chip.active {
+    color: var(--accent);
+    border-color: var(--accent);
+    background: var(--accent-tint);
+  }
+</style>

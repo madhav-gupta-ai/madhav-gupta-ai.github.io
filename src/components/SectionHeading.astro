@@ -1,13 +1,13 @@
 ---
 interface Props {
-  num: string;
+  num?: string;
   title: string;
 }
 const { num, title } = Astro.props;
 ---
 
 <h2 class="section-heading reveal">
-  <span class="num mono">{num}.</span>
+  <span class="num mono">{num ? `${num}.` : '//'}</span>
   <span class="title">{title}</span>
   <span class="rule" aria-hidden="true"></span>
 </h2>

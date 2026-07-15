@@ -2,6 +2,7 @@
 title: "AI Movie Dubbing"
 summary: "A pipeline to subtitle and dub films into English while preserving actors' voices and emotions — speech separation, translation, and voice synthesis."
 tags: [Speech, CNN, NLP, Voice Synthesis]
+featured: true
 order: 1
 # DUMMY link for layout preview — replace with the real URL:
 github: https://github.com/madhav-gupta-ai/DUMMY-REPLACE-ME

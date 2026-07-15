@@ -6,13 +6,21 @@ import ProjectCard from '../components/ProjectCard.astro';
 import { getCollection } from 'astro:content';
 import { site } from '../data/site';
 
-const papers = (await getCollection('papers'))
-  .filter((p) => p.data.featured)
-  .sort((a, b) => a.data.order - b.data.order);
-
-const projects = (await getCollection('projects')).sort(
+const allPapers = (await getCollection('papers')).sort(
   (a, b) => a.data.order - b.data.order
 );
+const allProjects = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+
+// featured: true on any paper/project moves it into the "// Featured" spotlight
+const featured = [
+  ...allPapers.filter((p) => p.data.featured).map((entry) => ({ kind: 'paper', entry })),
+  ...allProjects.filter((p) => p.data.featured).map((entry) => ({ kind: 'project', entry })),
+].sort((a, b) => a.entry.data.order - b.entry.data.order);
+
+const papers = allPapers.filter((p) => !p.data.featured).slice(0, 4);
+const projects = allProjects.filter((p) => !p.data.featured).slice(0, 4);
 
 const posts = (await getCollection('blog'))
   .filter((p) => !p.data.draft)
@@ -90,8 +98,9 @@ const skills = [
       <p class="hero-sub reveal visible">{site.tagline}</p>
       <p class="hero-blurb reveal visible">
         I'm an AI/ML researcher and master's student in Trustworthy and Responsible AI
-        at École Polytechnique (IP Paris), currently exploring geometric deep learning
-        for mechanical design optimization at Michelin.
+        at <a href="https://www.polytechnique.edu/en" target="_blank" rel="noopener">École Polytechnique</a> (IP Paris),
+        currently exploring geometric deep learning for mechanical design optimization
+        at <a href="https://www.michelin.com/en" target="_blank" rel="noopener">Michelin</a>.
       </p>
       <div class="hero-cta reveal visible">
         <a class="btn btn-lg" href="#research">Check out my research</a>
@@ -104,17 +113,21 @@ const skills = [
       <div class="about-grid">
         <div class="about-text reveal">
           <p>
-            I'm a master's student in Trustworthy and Responsible AI at École
-            Polytechnique (IP Paris) and an AI/ML researcher with first-author and
-            co-author publications across international conferences and journals. My
-            work spans deep learning, NLP, recommendation systems, physics-informed
-            and geometric deep learning, and optimization.
+            I'm a master's student in Trustworthy and Responsible AI at
+            <a href="https://www.polytechnique.edu/en" target="_blank" rel="noopener">École Polytechnique</a>
+            (IP Paris) and an AI/ML researcher with first-author and co-author
+            publications across international conferences and journals. My work spans
+            deep learning, NLP, recommendation systems, physics-informed and geometric
+            deep learning, and optimization.
           </p>
           <p>
             I've carried out research across academic labs, industry AI teams, and
             government-backed initiatives — applying machine learning to computational
             psychology, healthcare and disease surveillance, geospatial and climate
-            modeling, industrial process optimization, and satellite navigation.
+            modeling, industrial process optimization, and satellite navigation. These
+            days I'm an AI research intern at
+            <a href="https://www.michelin.com/en" target="_blank" rel="noopener">Michelin</a>,
+            on the Industry 4.0 Exploration team.
           </p>
           <p>
             Alongside the technical work, I have a sustained interest in AI ethics and
@@ -134,9 +147,41 @@ const skills = [
             height="743"
             loading="eager"
           />
+          <svg class="border-trace" viewBox="0 0 300 300" aria-hidden="true">
+            <defs>
+              <radialGradient id="trace-grad" gradientUnits="userSpaceOnUse" cx="150" cy="150" r="212">
+                <stop offset="0" style="stop-color: var(--glow)" stop-opacity="0.05"></stop>
+                <stop offset="0.7" style="stop-color: var(--glow)" stop-opacity="0.3"></stop>
+                <stop offset="1" style="stop-color: var(--glow)" stop-opacity="0.8"></stop>
+              </radialGradient>
+            </defs>
+            <!-- two half-perimeter paths starting exactly at the TL and BR corner apexes,
+                 traced 3.5 inside the photo edge (r=2.5 parallel of the 6px corner) so the
+                 7px stroke hugs the frame with no uncovered corner wedge -->
+            <path pathLength="1000" d="M 4.23 4.23 A 2.5 2.5 0 0 1 6 3.5 H 294 A 2.5 2.5 0 0 1 296.5 6 V 294 A 2.5 2.5 0 0 1 295.77 295.77" />
+            <path pathLength="1000" d="M 295.77 295.77 A 2.5 2.5 0 0 1 294 296.5 H 6 A 2.5 2.5 0 0 1 3.5 294 V 6 A 2.5 2.5 0 0 1 4.23 4.23" />
+          </svg>
         </div>
       </div>
     </section>
+
+    <!-- ============ FEATURED ============ -->
+    {
+      featured.length > 0 && (
+        <section id="featured" class="section">
+          <SectionHeading title="Featured" />
+          <div class="card-grid">
+            {featured.map((f) =>
+              f.kind === 'paper' ? (
+                <PaperCard paper={f.entry} />
+              ) : (
+                <ProjectCard project={f.entry} />
+              )
+            )}
+          </div>
+        </section>
+      )
+    }
 
     <!-- ============ EXPERIENCE ============ -->
     <section id="experience" class="section">
@@ -170,7 +215,7 @@ const skills = [
         {papers.map((paper) => <PaperCard paper={paper} />)}
       </div>
       <p class="section-more reveal">
-        <a class="mono" href="/research">View the full publication list →</a>
+        <a class="mono" href="/research">View all publications →</a>
       </p>
     </section>
 
@@ -180,6 +225,9 @@ const skills = [
       <div class="card-grid">
         {projects.map((project) => <ProjectCard project={project} />)}
       </div>
+      <p class="section-more reveal">
+        <a class="mono" href="/projects">View all projects →</a>
+      </p>
     </section>
 
     <!-- ============ WRITING ============ -->
@@ -303,8 +351,6 @@ const skills = [
     width: 100%;
     height: auto;
     border-radius: var(--rounded-md);
-    filter: grayscale(30%);
-    transition: filter var(--transition);
   }
 
   .portrait::before {
@@ -320,26 +366,40 @@ const skills = [
     transition: transform var(--transition);
   }
 
-  .portrait::after {
-    content: '';
+  .border-trace {
     position: absolute;
     inset: 0;
-    border-radius: var(--rounded-md);
-    box-shadow: inset 0 0 36px 6px rgba(100, 255, 218, 0.25);
+    width: 100%;
+    height: 100%;
     pointer-events: none;
-    transition: opacity var(--transition);
   }
 
-  .portrait:hover img {
-    filter: none;
+  .border-trace path {
+    fill: none;
+    stroke: url(#trace-grad);
+    stroke-width: 7;
+    stroke-linecap: round;
+    stroke-dasharray: 1000 2000;
+    stroke-dashoffset: 0;
+    /* gentle anticlockwise roll-back when the pointer leaves */
+    transition: stroke-dashoffset 1.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .portrait:hover::after {
-    opacity: 0;
+  /* on hover both halves unroll clockwise from their corners — quick but visible.
+     -1010 overshoots the path end so the round caps fully clear (no leftover dot) */
+  .portrait:hover .border-trace path {
+    stroke-dashoffset: -1010;
+    transition: stroke-dashoffset 0.85s cubic-bezier(0.55, 0, 0.45, 1);
   }
 
   .portrait:hover::before {
     transform: translate(-6px, -6px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .border-trace path {
+      transition: none;
+    }
   }
 
   /* experience */

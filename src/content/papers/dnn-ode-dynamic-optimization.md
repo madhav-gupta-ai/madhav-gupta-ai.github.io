@@ -6,7 +6,6 @@ status: published
 role: "Lead Researcher & Presenter"
 tags: [Deep Learning, Optimal Control, Dynamic Optimization]
 summary: "A deep neural network framework for ODE-based dynamic optimization that outperformed metaheuristic and gradient-based methods, setting a new best solution for the ethanol-production problem."
-featured: true
 order: 3
 ---
 

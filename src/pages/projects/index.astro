@@ -1,16 +1,16 @@
 ---
-import Base from '../layouts/Base.astro';
-import PaperCard from '../components/PaperCard.astro';
-import TagFilter from '../components/TagFilter.astro';
+import Base from '../../layouts/Base.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import TagFilter from '../../components/TagFilter.astro';
 import { getCollection } from 'astro:content';
 
-const papers = (await getCollection('papers')).sort(
+const projects = (await getCollection('projects')).sort(
   (a, b) => a.data.order - b.data.order
 );
 
 // Filter topics = every tag in use, most common first.
 const tagCounts = new Map<string, number>();
-papers.forEach((p) =>
+projects.forEach((p) =>
   p.data.tags.forEach((t) => tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1))
 );
 const topics = [...tagCounts.entries()]
@@ -18,14 +18,14 @@ const topics = [...tagCounts.entries()]
   .map(([t]) => t);
 ---
 
-<Base title="Publications — Madhav Gupta">
+<Base title="Projects — Madhav Gupta">
   <div class="container">
     <header class="page-head">
-      <p class="mono kicker">03. Research</p>
-      <h1>All Publications</h1>
+      <p class="mono kicker">04. Projects</p>
+      <h1>All Projects</h1>
       <p class="lead">
-        First-author and co-author work across conferences and journals in machine
-        learning, NLP, optimization, and applied AI. Filter by topic below.
+        Technical projects across speech, healthcare NLP, simulation, and statistics.
+        Filter by topic below.
       </p>
     </header>
 
@@ -33,9 +33,9 @@ const topics = [...tagCounts.entries()]
 
     <div class="card-grid">
       {
-        papers.map((paper) => (
-          <div class="filter-item" data-tags={paper.data.tags.join('|')}>
-            <PaperCard paper={paper} />
+        projects.map((project) => (
+          <div class="filter-item" data-tags={project.data.tags.join('|')}>
+            <ProjectCard project={project} />
           </div>
         ))
       }

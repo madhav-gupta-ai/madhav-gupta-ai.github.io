@@ -6,7 +6,6 @@ status: published
 role: "Lead Researcher & Presenter"
 tags: [Recommender Systems, Contrastive Learning, NLP]
 summary: "A hybridized music-recommendation system combining deep contrastive learning with collaborative and content-based filtering — a 24.2% performance gain over baselines."
-featured: true
 order: 2
 ---
 
