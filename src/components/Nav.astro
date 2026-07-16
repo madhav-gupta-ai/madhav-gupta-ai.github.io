@@ -15,6 +15,17 @@ const links = [
   <nav class="container nav-inner" aria-label="Primary">
     <a class="logo mono" href="/" aria-label="Home">~/mg</a>
 
+    <!-- mobile-only CTA cluster; display:none on desktop -->
+    <div class="nav-cta">
+      <a class="btn cta-resume" href={site.resume} target="_blank" rel="noopener">Resume</a>
+      <a class="cta-contact" href="/#contact" aria-label="Contact">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+      </a>
+    </div>
+
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -95,6 +106,10 @@ const links = [
     text-decoration: none;
   }
 
+  .nav-cta {
+    display: none;
+  }
+
   .nav-toggle {
     display: none;
     background: none;
@@ -133,6 +148,35 @@ const links = [
   @media (max-width: 920px) {
     .nav-toggle {
       display: block;
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-md);
+      margin-left: auto;
+      margin-right: var(--space-sm);
+    }
+
+    .cta-resume {
+      padding: 8px 12px;
+      font-size: 0.72rem;
+    }
+
+    .cta-contact {
+      color: var(--accent);
+      display: flex;
+      padding: var(--space-sm);
+    }
+
+    .cta-contact svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Resume lives in the bar on mobile — hide the duplicate in the menu */
+    .nav-menu .resume-btn {
+      display: none;
     }
 
     .nav-menu {
