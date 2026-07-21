@@ -1,5 +1,6 @@
 ---
 import { site } from '../data/site';
+import ThemeToggle from './ThemeToggle.astro';
 
 const links = [
   { n: '01', label: 'About', href: '/#about' },
@@ -15,7 +16,8 @@ const links = [
   <nav class="container nav-inner" aria-label="Primary">
     <a class="logo mono" href="/" aria-label="Home">~/mg</a>
 
-    <!-- mobile-only CTA cluster; display:none on desktop -->
+    <!-- mobile-only CTA cluster; display:none on desktop.
+         Order: primary CTA → secondary → utility, menu anchored at the edge. -->
     <div class="nav-cta">
       <a class="btn cta-resume" href={site.resume} target="_blank" rel="noopener">Resume</a>
       <a class="cta-contact" href="/#contact" aria-label="Contact">
@@ -24,6 +26,7 @@ const links = [
           <polyline points="22,6 12,13 2,6"></polyline>
         </svg>
       </a>
+      <ThemeToggle />
     </div>
 
     <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="nav-menu">
@@ -43,6 +46,7 @@ const links = [
         ))
       }
       <a class="btn resume-btn" href={site.resume} target="_blank" rel="noopener">Resume</a>
+      <span class="menu-toggle-slot"><ThemeToggle /></span>
     </div>
   </nav>
 </header>
@@ -78,13 +82,17 @@ const links = [
     left: 0;
     right: 0;
     z-index: 10;
-    background: rgba(10, 25, 47, 0.85);
+    background: var(--nav-bg);
     backdrop-filter: blur(10px);
     transition: box-shadow var(--transition);
   }
 
   .site-nav.scrolled {
-    box-shadow: 0 10px 30px -10px rgba(2, 12, 27, 0.7);
+    box-shadow: var(--nav-shadow);
+  }
+
+  .menu-toggle-slot {
+    display: contents;
   }
 
   .nav-inner {
@@ -117,6 +125,10 @@ const links = [
     color: var(--accent);
     cursor: pointer;
     padding: var(--space-sm);
+  }
+
+  .nav-toggle svg {
+    display: block;
   }
 
   .nav-menu {
@@ -174,8 +186,9 @@ const links = [
       height: 20px;
     }
 
-    /* Resume lives in the bar on mobile — hide the duplicate in the menu */
-    .nav-menu .resume-btn {
+    /* Resume + toggle live in the bar on mobile — hide the duplicates in the menu */
+    .nav-menu .resume-btn,
+    .menu-toggle-slot {
       display: none;
     }
 
@@ -195,6 +208,22 @@ const links = [
 
     .nav-menu.open {
       display: flex;
+    }
+  }
+
+  /* very small phones: tighten the CTA cluster so nothing wraps */
+  @media (max-width: 360px) {
+    .nav-cta {
+      gap: var(--space-sm);
+      margin-right: var(--space-xs);
+    }
+
+    .cta-resume {
+      padding: 6px 10px;
+    }
+
+    .cta-contact {
+      padding: 6px;
     }
   }
 </style>

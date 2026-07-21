@@ -1,0 +1,117 @@
+---
+// Pixel sun/moon theme toggle ("ghost icon" style). Icon state is driven by
+// html[data-theme], so multiple instances (desktop nav + mobile bar) stay in sync.
+---
+
+<button class="theme-toggle" aria-label="Toggle color theme">
+  <span class="icon-well">
+    <svg class="i-sun" viewBox="0 0 12 12" aria-hidden="true">
+      <rect x="5" y="1" width="2" height="1"></rect>
+      <rect x="1" y="3" width="1" height="1"></rect>
+      <rect x="10" y="3" width="1" height="1"></rect>
+      <rect x="4" y="4" width="4" height="1"></rect>
+      <rect x="3" y="5" width="6" height="1"></rect>
+      <rect x="0" y="6" width="1" height="1"></rect>
+      <rect x="2" y="6" width="8" height="1"></rect>
+      <rect x="11" y="6" width="1" height="1"></rect>
+      <rect x="2" y="7" width="8" height="1"></rect>
+      <rect x="3" y="8" width="6" height="1"></rect>
+      <rect x="0" y="10" width="12" height="1"></rect>
+    </svg>
+    <svg class="i-moon" viewBox="0 0 12 12" aria-hidden="true">
+      <rect x="3" y="1" width="4" height="1"></rect>
+      <rect x="5" y="2" width="4" height="1"></rect>
+      <rect class="dim" x="6" y="3" width="1" height="1"></rect>
+      <rect x="7" y="3" width="3" height="1"></rect>
+      <rect class="dim" x="7" y="4" width="1" height="1"></rect>
+      <rect x="8" y="4" width="3" height="1"></rect>
+      <rect class="dim" x="8" y="5" width="1" height="1"></rect>
+      <rect x="9" y="5" width="2" height="1"></rect>
+      <rect class="dim" x="8" y="6" width="1" height="1"></rect>
+      <rect x="9" y="6" width="2" height="1"></rect>
+      <rect class="dim" x="7" y="7" width="1" height="1"></rect>
+      <rect x="8" y="7" width="3" height="1"></rect>
+      <rect class="dim" x="6" y="8" width="1" height="1"></rect>
+      <rect x="7" y="8" width="3" height="1"></rect>
+      <rect x="5" y="9" width="4" height="1"></rect>
+      <rect x="3" y="10" width="4" height="1"></rect>
+    </svg>
+  </span>
+</button>
+
+<script>
+  document.querySelectorAll('.theme-toggle').forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const next =
+        document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+      document.documentElement.dataset.theme = next;
+      localStorage.setItem('theme', next);
+    })
+  );
+</script>
+
+<style>
+  .theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--accent);
+    padding: var(--space-sm);
+    border-radius: var(--rounded-sm);
+    transition: background var(--transition);
+  }
+
+  .theme-toggle:hover {
+    background: var(--accent-tint);
+  }
+
+  .icon-well {
+    position: relative;
+    display: block;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+  }
+
+  svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+    shape-rendering: crispEdges;
+    /* chunky 8-bit rise/set */
+    transition: transform 0.35s steps(4), opacity 0.35s steps(4);
+  }
+
+  svg .dim {
+    opacity: 0.45;
+  }
+
+  /* dark theme: sun shown (click → light); light theme: moon shown */
+  .i-sun {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .i-moon {
+    transform: translateY(115%);
+    opacity: 0;
+  }
+
+  :global(html[data-theme='light']) .i-sun {
+    transform: translateY(-115%);
+    opacity: 0;
+  }
+
+  :global(html[data-theme='light']) .i-moon {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    svg {
+      transition: none;
+    }
+  }
+</style>
