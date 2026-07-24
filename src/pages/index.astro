@@ -232,7 +232,7 @@ const skills = [
 
     <!-- ============ WRITING ============ -->
     <section id="writing" class="section">
-      <SectionHeading num="05" title="Writing" />
+      <SectionHeading num="05" title="Featured Writing" />
       <div class="post-list">
         {
           posts.map((post) => (
@@ -307,6 +307,11 @@ const skills = [
 
   .section {
     padding: var(--space-xl) 0;
+  }
+
+  /* featured: pull the cards slightly closer to the heading */
+  #featured :global(.section-heading) {
+    margin-bottom: var(--space-lg);
   }
 
   /* about */
@@ -529,6 +534,11 @@ const skills = [
   }
 
   @media (max-width: 768px) {
+    /* pull the writing list slightly closer to its heading on phones */
+    #writing :global(.section-heading) {
+      margin-bottom: var(--space-lg);
+    }
+
     .about-grid {
       grid-template-columns: 1fr;
     }

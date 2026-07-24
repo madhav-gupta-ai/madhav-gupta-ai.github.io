@@ -11,11 +11,7 @@ const posts = (await getCollection('blog'))
   <div class="container">
     <header class="page-head">
       <p class="mono kicker">05. Writing</p>
-      <h1>Blog</h1>
-      <p class="lead">
-        Occasional notes on machine learning, research, and whatever else seems worth
-        writing down.
-      </p>
+      <h1>Featured Writing</h1>
     </header>
 
     <div class="post-list">
@@ -37,7 +33,7 @@ const posts = (await getCollection('blog'))
 <style>
   .page-head {
     max-width: 680px;
-    padding: var(--space-xl) 0 var(--space-xxl);
+    padding: var(--space-xl) 0 var(--space-md);
   }
 
   .kicker {
@@ -50,21 +46,16 @@ const posts = (await getCollection('blog'))
     font-weight: 700;
   }
 
-  .lead {
-    color: var(--muted);
-    margin-top: var(--space-md);
-  }
-
   .post-list {
     display: flex;
     flex-direction: column;
-    gap: var(--space-lg);
+    gap: var(--space-sm);
     max-width: 680px;
   }
 
   .post {
     display: block;
-    padding: var(--space-lg);
+    padding: var(--space-md) var(--space-lg);
     margin: 0 calc(-1 * var(--space-lg));
     border-radius: var(--rounded-md);
     color: inherit;

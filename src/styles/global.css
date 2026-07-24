@@ -241,6 +241,8 @@ a:hover {
   padding: var(--space-md);
   overflow-x: auto;
   margin: var(--space-md) 0;
+  font-size: 0.82rem;
+  line-height: 1.6;
 }
 
 .prose pre code {
@@ -254,4 +256,78 @@ a:hover {
   padding-left: var(--space-md);
   color: var(--muted);
   margin: var(--space-md) 0;
+}
+
+/* ---- post prose: "Editorial" report styling ---- */
+
+/* booktabs-style tables: strong outer rules, hairline row separators */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: var(--space-lg) 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  border-top: 2px solid var(--heading);
+  border-bottom: 2px solid var(--heading);
+}
+
+.prose th {
+  color: var(--heading);
+  font-weight: 600;
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--heading);
+}
+
+.prose td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.prose tr:last-child td {
+  border-bottom: none;
+}
+
+/* figures: centered, capped to the column, bordered per design tokens */
+.prose img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: var(--space-lg) auto 0;
+  border: 1px solid var(--border);
+  border-radius: var(--rounded-lg);
+}
+
+/* captions: an *em*-only paragraph directly after a figure (or pasted align=center HTML) */
+.prose p:has(> img) + p:has(> em:only-child),
+.prose p[align='center']:has(em) {
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-top: var(--space-sm);
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: var(--space-xl) 0;
+}
+
+/* long reference URLs must wrap, not overflow the column */
+.prose li a {
+  overflow-wrap: anywhere;
+}
+
+/* anchor jumps (citation backlinks, heading links) must clear the fixed nav */
+.prose :where(h2, h3, a[id]) {
+  scroll-margin-top: 96px;
+}
+
+/* wide tables scroll sideways on small screens instead of overflowing the page */
+@media (max-width: 768px) {
+  .prose table {
+    display: block;
+    overflow-x: auto;
+  }
 }

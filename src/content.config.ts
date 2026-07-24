@@ -33,7 +33,13 @@ const projects = defineCollection({
 });
 
 const blog = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
+  // Posts are either flat files (hello-world.md) or folders with co-located
+  // assets (polarised-perspectives/index.md + figures/) — both get a clean id.
+  loader: glob({
+    pattern: '**/*.md',
+    base: './src/content/blog',
+    generateId: ({ entry }) => entry.replace(/\.md$/, '').replace(/\/index$/, ''),
+  }),
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
