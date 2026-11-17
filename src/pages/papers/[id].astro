@@ -1,46 +1,47 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
+import { marked } from 'marked';
 import { STATUS_LABELS } from '../../data/site';
 
 export async function getStaticPaths() {
   const papers = await getCollection('papers');
-  return papers.map((paper) => ({
-    params: { id: paper.id },
-    props: { paper },
-  }));
+  return papers
+    .filter((paper) => paper.data.visible)
+    .map((paper) => ({
+      params: { id: paper.id },
+      props: { paper },
+    }));
 }
 
 const { paper } = Astro.props;
 const d = paper.data;
-const { Content } = await render(paper);
+const detailsHtml = marked.parse(d.detailsMd);
 ---
 
-<Base title={`${d.title} — Madhav Gupta`} description={d.summary}>
+<Base title={`${d.fullTitle} | Madhav Gupta`} description={d.summary}>
   <div class="container">
     <article class="detail">
       <p class="back"><a class="mono" href="/research">← All publications</a></p>
       <p class="venue mono">
-        {d.venue}{d.year ? ` · ${d.year}` : ''} · {STATUS_LABELS[d.status]}
+        {d.venue}{d.year && !d.venue.includes(String(d.year)) ? ` · ${d.year}` : ''} · {STATUS_LABELS[d.status]}
       </p>
-      <h1>{d.title}</h1>
+      <h1>{d.fullTitle}</h1>
       <div class="tag-row meta">
-        <span class="badge">{d.role}</span>
+        {d.role && <span class="badge">{d.role}</span>}
         {d.award && <span class="badge">{d.award}</span>}
         {d.tags.map((t: string) => <span class="tag">{t}</span>)}
       </div>
       {
-        (d.doi || d.github || d.pdf) && (
+        (d.paperUrl || d.codeUrl || d.pdfUrl) && (
           <div class="actions">
-            {d.doi && <a class="action mono" href={d.doi} target="_blank" rel="noopener">Paper ↗</a>}
-            {d.github && <a class="action mono" href={d.github} target="_blank" rel="noopener">Code ↗</a>}
-            {d.pdf && <a class="action mono" href={d.pdf} target="_blank" rel="noopener">PDF ↗</a>}
+            {d.paperUrl && <a class="action mono" href={d.paperUrl} target="_blank" rel="noopener">Paper ↗</a>}
+            {d.codeUrl && <a class="action mono" href={d.codeUrl} target="_blank" rel="noopener">Code ↗</a>}
+            {d.pdfUrl && <a class="action mono" href={d.pdfUrl} target="_blank" rel="noopener">PDF ↗</a>}
           </div>
         )
       }
-      <div class="prose">
-        <Content />
-      </div>
+      <div class="prose" set:html={detailsHtml} />
     </article>
   </div>
 </Base>

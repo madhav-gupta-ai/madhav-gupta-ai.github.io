@@ -3,24 +3,26 @@ import Base from '../layouts/Base.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import PaperCard from '../components/PaperCard.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import ActivityList from '../components/ActivityList.astro';
 import { getCollection } from 'astro:content';
 import { site } from '../data/site';
 
-const allPapers = (await getCollection('papers')).sort(
-  (a, b) => a.data.order - b.data.order
-);
-const allProjects = (await getCollection('projects')).sort(
-  (a, b) => a.data.order - b.data.order
-);
+const allPapers = (await getCollection('papers'))
+  .filter((p) => p.data.visible)
+  .sort((a, b) => a.data.order - b.data.order);
+const allProjects = (await getCollection('projects'))
+  .filter((p) => p.data.visible)
+  .sort((a, b) => a.data.order - b.data.order);
 
-// featured: true on any paper/project moves it into the "// Featured" spotlight
+// featured=true on any paper/project moves it into the "// Featured" spotlight;
+// the home Research/Projects sections show homepage=true, non-featured entries.
 const featured = [
   ...allPapers.filter((p) => p.data.featured).map((entry) => ({ kind: 'paper', entry })),
   ...allProjects.filter((p) => p.data.featured).map((entry) => ({ kind: 'project', entry })),
 ].sort((a, b) => a.entry.data.order - b.entry.data.order);
 
-const papers = allPapers.filter((p) => !p.data.featured).slice(0, 4);
-const projects = allProjects.filter((p) => !p.data.featured).slice(0, 4);
+const papers = allPapers.filter((p) => p.data.homepage && !p.data.featured);
+const projects = allProjects.filter((p) => p.data.homepage && !p.data.featured);
 
 const posts = (await getCollection('blog'))
   .filter((p) => !p.data.draft)
@@ -29,63 +31,132 @@ const posts = (await getCollection('blog'))
 
 const experience = [
   {
-    role: 'AI & Deep Learning Research Intern',
-    org: 'Michelin — Exploration Team, Industry 4.0',
+    role: 'Deep Learning Intern',
+    org: 'Michelin',
     where: 'Clermont-Ferrand, France',
-    dates: 'Mar 2026 – Present',
+    dates: 'Mar 2026 - Sep 2026',
+    summary:
+      'Research internship in the EXPLORE team (Industry 4.0, Department of Manufacturing), applying machine learning to tyre manufacturing.',
+    link: { href: '/projects/michelin-extruder-screws/', label: 'How the work was done →' },
     points: [
-      'Exploring geometric deep learning strategies for mechanical design optimization within an industrial R&D setting.',
+      'Dynamic optimisation of extruder screws with genetic algorithms, 50x simulated flow (4 → 208 L/min).',
+      'Made the extrusion simulator 125x faster, cutting a design search from over 8 hours to 4 minutes.',
+      'Trained neural surrogates (GNN, CNN) on 200,000 designs for gradient-based design optimisation.',
+      'A+ for the research internship, École Polytechnique.',
     ],
   },
   {
-    role: 'Machine Learning Research Intern',
-    org: 'Centre for Interdisciplinary AI, FLAME University',
+    role: 'ML Research Assistant',
+    org: 'Centre for Inter-disciplinary AI, FLAME University',
     where: 'Pune, India',
-    dates: 'Sep 2024 – Feb 2025',
+    dates: 'Sep 2024 - Feb 2025',
+    summary: 'Six months of research after my degree.',
+    link: { href: '/research', label: 'See the publications →' },
     points: [
-      'Led four first-author research papers, two accepted at ICDMAI and ICE; co-authored six-plus additional publications.',
-      'Designed end-to-end ML pipelines, optimized deep learning models, and ran large-scale experimental simulations.',
+      'Authored 4 first-author papers, co-authored 3 more, and presented at international conferences.',
+      'Research in scientific modelling and optimal control for industrial chemical reactors.',
     ],
   },
   {
     role: 'Student Research Assistant',
-    org: 'FLAME University — Dept. of Computing and Data Sciences',
+    org: 'FLAME University',
     where: 'Pune, India',
-    dates: 'Sep 2023 – Dec 2023',
-    points: [
-      'Analyzed ML-driven Local Climate Zone classification for Urban Heat Islands in India and proposed context-aware CNN architectures over traditional classifiers.',
-    ],
+    dates: 'Sep 2023 - Dec 2023',
+    summary:
+      'Reviewed machine-learning methods for Local Climate Zone classification for urban heat islands in India, and identified the open problem: no large-scale, generalisable classifier exists.',
+    points: [],
   },
   {
-    role: 'AI & Machine Learning Intern',
-    org: 'Wadhwani AI — Integrated Disease Surveillance Program',
+    role: 'AI and Machine Learning Intern',
+    org: 'Wadhwani AI',
     where: 'Delhi, India',
-    dates: 'Jun 2023 – Aug 2023',
+    dates: 'Jun 2023 - Aug 2023',
+    summary:
+      "Media-based disease surveillance for the Government of India's Integrated Disease Surveillance Programme.",
     points: [
-      'Enhanced AI-driven disease-surveillance pipelines with multilingual NLP for Indic languages.',
-      'Proposed outbreak-detection methodologies improving detection by up to 108% while reducing latency by 35%.',
+      'Extended the event-extraction pipeline from article titles to full article text; one approach found 108% more new events on the test articles.',
+      'Benchmarked web content extractors on 1,980 pages in 11 languages; parallel extraction cut the time per 100 articles from 330 s to 95 s.',
+      'Compared BERT, RoBERTa and XLM-R tokenisers on Indian languages; XLM-R handled them best.',
     ],
   },
   {
     role: 'Research Intern',
-    org: 'Bandi Research Group, University of Alabama',
-    where: 'Alabama, USA',
-    dates: 'May 2022 – Jul 2022',
+    org: 'PNTF Lab, the University of Alabama',
+    where: 'Remote',
+    dates: 'May 2022 - Jul 2022',
+    summary:
+      'Summer research internship in satellite navigation with the Precision, Navigation, Timing and Frequency Lab.',
     points: [
-      'Implemented a GNSS-based geolocation algorithm for satellite positioning, validated against IISc GNSS station data.',
+      'Wrote, from scratch, a Python algorithm that locates a GPS receiver from raw satellite navigation data.',
+      "Checked it against the IISc Bangalore station: the computed position fell a few metres from the station's true coordinates.",
     ],
   },
+  {
+    role: 'ML Trainee (one-to-one)',
+    org: 'FLAME University',
+    where: 'Pune, India',
+    dates: 'Nov 2021 - Apr 2022',
+    summary: 'Machine-learning training with a faculty mentor, as the sole trainee.',
+    points: [
+      'Implemented decision trees, linear and logistic regression and random forests from scratch.',
+      'Studied and implemented the Black Hole feature selection algorithm.',
+    ],
+  },
+];
+
+const education = [
+  {
+    degree: 'MScT in Trustworthy and Responsible AI',
+    school: 'École Polytechnique (IP Paris)',
+    where: 'Palaiseau, France',
+    dates: '2025 - 2027',
+    points: [
+      'Coursework: Deep RL, Constrained RL, Optimisation for AI, Explainable AI, Verification of Neural Networks.',
+      'M1 GPA 3.98, first quartile.',
+    ],
+  },
+  {
+    degree: 'BSc (Honours) in Computer Science',
+    school: 'FLAME University',
+    where: 'Pune, India',
+    dates: '2020 - 2024',
+    points: [
+      "Dean's Roll of Honour for Academic Excellence.",
+      'Honours thesis: Detecting Depression in Text using Word Embeddings.',
+      'Fourth-year dissertation: A Hybridized Filtering-based Deep Contrastive Learning Model for Music Recommendation.',
+    ],
+  },
+];
+
+const activities = [
+  // awards
+  { title: 'Best Paper Award (3rd place), ICDMAI 2026', text: 'For the minority-class oversampling paper.' },
+  { title: 'A+ for the Michelin research internship', text: 'École Polytechnique, 2026.' },
+  // activities
+  { title: 'Founding Member, IEEE Polytechnique', text: 'Co-founded the IEEE student chapter at École Polytechnique (X-IEEE) in 2025.' },
+  { title: 'Class Representative, École Polytechnique', text: 'Represented the Trustworthy and Responsible AI cohort to Polytechnique leadership.' },
+  { title: 'Adopt AI Hackathon (selected)', text: 'Disinformation and Democratic Sovereignty challenge, run by the French Presidency.' },
+  { title: 'Co-founder, DotSlash Tech Club, FLAME', text: "Executive committee member of FLAME's first official tech club." },
+  { title: 'Elected President, Philosophy Club, FLAME', text: 'Led a team of 15-20 and ran over 10 events.' },
+  { title: 'Student Tutor, FLAME Q-Center', text: 'Linear algebra, Python and machine learning.' },
+  { title: 'Invited Speaker, FLAME', text: 'Undergraduate seminar series.' },
 ];
 
 const skills = [
   'Python',
   'PyTorch',
+  'C++',
   'TensorFlow',
+  'Java',
   'scikit-learn',
-  'Hugging Face',
-  'CUDA',
+  'NumPy',
+  'HF Transformers',
+  'SciPy',
+  'Gymnasium',
+  'Pandas',
+  'Linux',
+  'Git',
   'Docker',
-  'AWS',
 ];
 ---
 
@@ -97,13 +168,14 @@ const skills = [
       <h1 class="reveal visible">{site.name}.</h1>
       <p class="hero-sub reveal visible">{site.tagline}</p>
       <p class="hero-blurb reveal visible">
-        I'm an AI/ML researcher and master's student in Trustworthy and Responsible AI
-        at <a href="https://www.polytechnique.edu/en" target="_blank" rel="noopener">École Polytechnique</a> (IP Paris),
-        currently exploring geometric deep learning for mechanical design optimization
-        at <a href="https://www.michelin.com/en" target="_blank" rel="noopener">Michelin</a>.
+        I'm a master's student in trustworthy AI at
+        <a href="https://www.polytechnique.edu/en" target="_blank" rel="noopener">École Polytechnique</a>
+        and a former deep learning intern at
+        <a href="https://www.michelin.com/en" target="_blank" rel="noopener">Michelin</a>.
+        I'm looking for a research internship from April 2027.
       </p>
       <div class="hero-cta reveal visible">
-        <a class="btn btn-lg" href="#research">Check out my research</a>
+        <a class="btn btn-lg" href="#featured">See my work</a>
       </div>
     </section>
 
@@ -113,28 +185,19 @@ const skills = [
       <div class="about-grid">
         <div class="about-text reveal">
           <p>
-            I'm a master's student in Trustworthy and Responsible AI at
-            <a href="https://www.polytechnique.edu/en" target="_blank" rel="noopener">École Polytechnique</a>
-            (IP Paris) and an AI/ML researcher with first-author and co-author
-            publications across international conferences and journals. My work spans
-            deep learning, NLP, recommendation systems, physics-informed and geometric
-            deep learning, and optimization.
+            Most of my work uses machine learning on physical systems: chemical reactors,
+            tyre extruders, Formula 1 racing lines.
           </p>
           <p>
-            I've carried out research across academic labs, industry AI teams, and
-            government-backed initiatives — applying machine learning to computational
-            psychology, healthcare and disease surveillance, geospatial and climate
-            modeling, industrial process optimization, and satellite navigation. These
-            days I'm an AI research intern at
-            <a href="https://www.michelin.com/en" target="_blank" rel="noopener">Michelin</a>,
-            on the Industry 4.0 Exploration team.
+            At <a href="https://www.michelin.com/en" target="_blank" rel="noopener">Michelin</a>,
+            I spent seven months making an extrusion simulator 125x faster, then used it to find
+            a screw design with 50 times the simulated flow. Before Polytechnique, I studied
+            computer science at FLAME University in India, where I wrote my first research papers.
           </p>
           <p>
-            Alongside the technical work, I have a sustained interest in AI ethics and
-            responsible deployment — transparency, fairness, and the societal impact
-            of the systems being built.
+            Outside work: philosophy, photography, football and Formula 1.
           </p>
-          <p>Technologies I work with regularly:</p>
+          <p>Tools I work with:</p>
           <ul class="skills mono">
             {skills.map((s) => <li>{s}</li>)}
           </ul>
@@ -142,7 +205,7 @@ const skills = [
         <div class="portrait reveal">
           <img
             src="/images/portrait.jpg"
-            alt="Portrait of Madhav Gupta"
+            alt="Madhav Gupta, smiling, in round glasses and a white T-shirt."
             width="743"
             height="743"
             loading="eager"
@@ -196,6 +259,39 @@ const skills = [
                   {e.role} <span class="exp-org">@ {e.org}</span>
                 </h3>
                 <div class="exp-where mono">{e.where}</div>
+                <p class="exp-summary">{e.summary}</p>
+                {e.points.length > 0 && (
+                  <ul>
+                    {e.points.map((pt) => (
+                      <li>{pt}</li>
+                    ))}
+                  </ul>
+                )}
+                {e.link && (
+                  <a class="exp-link mono" href={e.link.href}>
+                    {e.link.label}
+                  </a>
+                )}
+              </div>
+            </article>
+          ))
+        }
+      </div>
+    </section>
+
+    <!-- ============ EDUCATION ============ -->
+    <section id="education" class="section">
+      <SectionHeading num="03" title="Education" />
+      <div class="exp-list">
+        {
+          education.map((e) => (
+            <article class="exp reveal">
+              <div class="exp-dates mono">{e.dates}</div>
+              <div class="exp-body">
+                <h3>
+                  {e.degree} <span class="exp-org">@ {e.school}</span>
+                </h3>
+                <div class="exp-where mono">{e.where}</div>
                 <ul>
                   {e.points.map((pt) => (
                     <li>{pt}</li>
@@ -208,9 +304,15 @@ const skills = [
       </div>
     </section>
 
+    <!-- ============ ACTIVITIES & AWARDS ============ -->
+    <section id="activities" class="section">
+      <SectionHeading title="Activities & Awards" />
+      <ActivityList items={activities} />
+    </section>
+
     <!-- ============ RESEARCH ============ -->
     <section id="research" class="section">
-      <SectionHeading num="03" title="Selected Research" />
+      <SectionHeading num="04" title="Selected Research" />
       <div class="card-grid">
         {papers.map((paper) => <PaperCard paper={paper} />)}
       </div>
@@ -221,7 +323,7 @@ const skills = [
 
     <!-- ============ PROJECTS ============ -->
     <section id="projects" class="section">
-      <SectionHeading num="04" title="Things I've Built" />
+      <SectionHeading num="05" title="Things I've Built" />
       <div class="card-grid">
         {projects.map((project) => <ProjectCard project={project} />)}
       </div>
@@ -232,7 +334,7 @@ const skills = [
 
     <!-- ============ WRITING ============ -->
     <section id="writing" class="section">
-      <SectionHeading num="05" title="Featured Writing" />
+      <SectionHeading num="06" title="Writing" />
       <div class="post-list">
         {
           posts.map((post) => (
@@ -246,18 +348,18 @@ const skills = [
         }
       </div>
       <p class="section-more reveal">
-        <a class="mono" href="/blog">All posts →</a>
+        <a class="mono" href="/blog">View all writing →</a>
       </p>
     </section>
 
     <!-- ============ CONTACT ============ -->
     <section id="contact" class="section contact">
-      <p class="kicker mono reveal">06. What's Next?</p>
+      <p class="kicker mono reveal">07. What's Next?</p>
       <h2 class="reveal">Get In Touch</h2>
       <p class="contact-blurb reveal">
-        I'm currently open to internship and research opportunities in AI/ML. Whether
-        you have a role in mind, a potential collaboration, or just want to say hi, my
-        inbox is open.
+        I'm looking for a 6-8 month research internship from April 2027, in machine
+        learning for physical and industrial systems or in trustworthy AI. If you have a
+        role or a project in mind, or a question about my work, email me.
       </p>
       <a class="btn btn-lg reveal" href={`mailto:${site.email}`}>Say Hello</a>
     </section>
@@ -444,9 +546,21 @@ const skills = [
     margin-top: var(--space-xs);
   }
 
+  .exp-summary {
+    color: var(--text);
+    font-size: 0.9rem;
+    margin-top: var(--space-sm);
+  }
+
   .exp ul {
     list-style: none;
     margin-top: var(--space-sm);
+  }
+
+  .exp-link {
+    display: inline-block;
+    font-size: 0.78rem;
+    margin-top: var(--space-md);
   }
 
   .exp li {

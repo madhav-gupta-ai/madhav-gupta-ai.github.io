@@ -5,10 +5,11 @@ import ThemeToggle from './ThemeToggle.astro';
 const links = [
   { n: '01', label: 'About', href: '/#about' },
   { n: '02', label: 'Experience', href: '/#experience' },
-  { n: '03', label: 'Research', href: '/#research' },
-  { n: '04', label: 'Projects', href: '/#projects' },
-  { n: '05', label: 'Writing', href: '/blog' },
-  { n: '06', label: 'Contact', href: '/#contact' },
+  { n: '03', label: 'Education', href: '/#education' },
+  { n: '04', label: 'Research', href: '/#research' },
+  { n: '05', label: 'Projects', href: '/#projects' },
+  { n: '06', label: 'Writing', href: '/#writing' },
+  { n: '07', label: 'Contact', href: '/#contact' },
 ];
 ---
 
@@ -100,9 +101,12 @@ const links = [
     align-items: center;
     justify-content: space-between;
     height: 72px;
+    /* seven links + Resume + toggle need more room than the 1000px content column */
+    max-width: 1080px;
   }
 
   .logo {
+    margin-right: var(--space-lg);
     color: var(--accent);
     font-size: 1rem;
     font-weight: 600;
@@ -134,12 +138,13 @@ const links = [
   .nav-menu {
     display: flex;
     align-items: center;
-    gap: var(--space-lg);
+    gap: var(--space-md);
   }
 
   .nav-link {
     color: var(--text);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
     transition: color var(--transition);
   }
 
@@ -153,11 +158,12 @@ const links = [
   }
 
   .resume-btn {
-    padding: 10px 16px;
-    font-size: 0.78rem;
+    margin-left: var(--space-sm);
+    padding: 10px 14px;
+    font-size: 0.75rem;
   }
 
-  @media (max-width: 920px) {
+  @media (max-width: 1080px) {
     .nav-toggle {
       display: block;
     }

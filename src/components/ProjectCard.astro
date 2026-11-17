@@ -1,6 +1,7 @@
 ---
 const { project } = Astro.props;
 const d = project.data;
+const href = `/projects/${project.id}/`;
 ---
 
 <article class="card reveal">
@@ -8,16 +9,26 @@ const d = project.data;
     <svg class="folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
     </svg>
+    {d.ongoing && <span class="badge">Ongoing</span>}
   </div>
-  <h3><a href={`/projects/${project.id}/`}>{d.title}</a></h3>
+  {d.context && <div class="context mono">{d.context}</div>}
+  <h3>{d.hasPage ? <a href={href}>{d.title}</a> : d.title}</h3>
   <p>{d.summary}</p>
   <div class="tag-row">
     {d.tags.map((t: string) => <span class="tag">{t}</span>)}
   </div>
-  <div class="actions">
-    <a class="action mono" href={`/projects/${project.id}/`}>Details →</a>
-    {d.github && <a class="action mono" href={d.github} target="_blank" rel="noopener">GitHub ↗</a>}
-  </div>
+  {
+    (d.hasPage || d.linkUrl || d.codeUrl || d.pdfUrl) && (
+      <div class="actions">
+        {d.hasPage && <a class="action mono" href={href}>Details →</a>}
+        <div class="action-ext">
+          {d.linkUrl && <a class="action mono" href={d.linkUrl}>Essay →</a>}
+          {d.codeUrl && <a class="action mono" href={d.codeUrl} target="_blank" rel="noopener">GitHub ↗</a>}
+          {d.pdfUrl && <a class="action mono" href={d.pdfUrl} target="_blank" rel="noopener">PDF ↗</a>}
+        </div>
+      </div>
+    )
+  }
 </article>
 
 <style>
@@ -38,6 +49,9 @@ const d = project.data;
   }
 
   .card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     margin-bottom: var(--space-md);
   }
 
@@ -47,6 +61,12 @@ const d = project.data;
     color: var(--accent);
   }
 
+  .context {
+    color: var(--accent);
+    font-size: 0.72rem;
+    margin-bottom: var(--space-sm);
+  }
+
   .actions {
     display: flex;
     justify-content: space-between;
@@ -54,6 +74,12 @@ const d = project.data;
     flex-wrap: wrap;
     gap: var(--space-sm);
     margin-top: var(--space-md);
+  }
+
+  .action-ext {
+    display: flex;
+    gap: var(--space-sm);
+    margin-left: auto;
   }
 
   .action {
@@ -75,6 +101,7 @@ const d = project.data;
     font-size: 1.15rem;
     font-weight: 600;
     line-height: 1.35;
+    color: var(--heading);
   }
 
   h3 a {

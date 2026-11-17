@@ -1,0 +1,42 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Page not found | Madhav Gupta">
+  <div class="container">
+    <section class="missing">
+      <p class="kicker mono">404</p>
+      <h1>Page not found</h1>
+      <p class="lead">
+        Nothing lives at this address. Go back to the <a href="/">home page</a>, or browse my
+        <a href="/research">research</a> and <a href="/projects">projects</a>.
+      </p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .missing {
+    min-height: calc(70vh - 96px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 600px;
+    padding: var(--space-xxl) 0;
+  }
+
+  .kicker {
+    color: var(--accent);
+    margin-bottom: var(--space-md);
+  }
+
+  h1 {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+  }
+
+  .lead {
+    color: var(--muted);
+    margin-top: var(--space-md);
+  }
+</style>

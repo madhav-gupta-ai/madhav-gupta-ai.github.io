@@ -4,9 +4,9 @@ import ProjectCard from '../../components/ProjectCard.astro';
 import TagFilter from '../../components/TagFilter.astro';
 import { getCollection } from 'astro:content';
 
-const projects = (await getCollection('projects')).sort(
-  (a, b) => a.data.order - b.data.order
-);
+const projects = (await getCollection('projects'))
+  .filter((p) => p.data.visible)
+  .sort((a, b) => a.data.order - b.data.order);
 
 // Filter topics = every tag in use, most common first.
 const tagCounts = new Map<string, number>();
@@ -18,14 +18,14 @@ const topics = [...tagCounts.entries()]
   .map(([t]) => t);
 ---
 
-<Base title="Projects — Madhav Gupta">
+<Base title="Projects | Madhav Gupta">
   <div class="container">
     <header class="page-head">
-      <p class="mono kicker">04. Projects</p>
-      <h1>All Projects</h1>
+      <p class="mono kicker">05. Projects</p>
+      <h1>Projects</h1>
       <p class="lead">
-        Technical projects across speech, healthcare NLP, simulation, and statistics.
-        Filter by topic below.
+        Industrial R&D, research, course and personal projects, from reinforcement
+        learning and optimisation to privacy and NLP. Filter by topic below.
       </p>
     </header>
 

@@ -1,0 +1,281 @@
+id,title,card_text,details_md,code_url,keywords,visible,homepage,featured,order,context,status,pdf_url,link_url
+physics-informed-world-models,Physics-informed world models for control,"World models for control that start from known physics: an ODE core added to TD-MPC2, demonstrated on chemical reactors, fluid flow control, orbital mechanics and aerodynamics.","## In short
+
+I'm building world models for control that start from known physics. I added an ODE core, the equations that describe how a system evolves, to TD-MPC2, a model-based reinforcement learning algorithm. With a rough physics model and a high-fidelity simulator, the world model can be trained without collected data. The project is ongoing, and I have demonstrated it on four domains: chemical reactors, fluid flow control, orbital mechanics and aerodynamics.
+
+## The problem
+
+Model-based reinforcement learning plans with a learned model of how a system responds to actions. Learning that model usually takes a lot of interaction data, which is slow, expensive or unsafe to collect on real physical systems. Yet for many of these systems, the governing equations are already known, at least roughly.
+
+## The approach
+
+TD-MPC2 learns a latent world model and plans with it. I gave it an ODE core of known physics, so the model starts from the equations instead of learning the dynamics from scratch.
+
+## Where it stands
+
+Results will go on this page once they can be shared. The code is private for now.
+
+## Methods and tools
+
+Model-based reinforcement learning, world models, TD-MPC2, physics-informed machine learning, ODE models, optimal control.",,Reinforcement Learning;Physics-Informed ML;Optimisation & Control;ML for Physical Systems,true,true,true,2,Personal research project,ongoing,,
+michelin-extruder-screws,Optimising extruder screws,"Dynamic optimisation of extruder screws for tyre manufacturing: 50x simulated flow (4 → 208 L/min), found on an extrusion simulator I made 125x faster.","## In short
+
+In seven months at Michelin, I worked on the dynamic optimisation of extruder screws for tyre manufacturing. I made the extrusion simulator 125x faster, cutting a design search from over 8 hours to 4 minutes, and used evolutionary algorithms to find a single-screw design with 50x simulated flow (4 → 208 L/min). I then trained neural surrogates (GNN, CNN) on 200,000 designs for gradient-based design optimisation.
+
+## The problem
+
+An extruder's rotating screws push rubber through a die, and their shape sets how much rubber flows and how hot it gets. Michelin's screws were hand-crafted and tested, and its EXPLORE team asked whether machine learning could optimise them. Physics models already existed, but they were too slow for a large search and gave no usable gradients. There was also no dataset of measured designs.
+
+## What I did
+
+**Single-screw extruder.** I made the model 125x faster (560.6 ms to 4.5 ms per design) by cutting its main computation from O(N²) to O(N), caching tables and scoring designs in parallel. I described the whole screw as a 401-value design vector, with penalties for overheating above 100 °C and for profiles that could not be manufactured. Starting from 324 engineered designs, I ran Differential Evolution and Particle Swarm Optimisation, then tested the best design on 343 simulated rubbers.
+
+<!-- Figure 1: deck sheet 13, the optimised single screw for the base rubber -->
+
+**Twin-screw extruder.** I extended the model with two further leakage paths and a new chamber-volume calculation (error from about 40% to about 2%), and made it about 30x faster. The flow had to be high and stay flat as die pressure rises from 50 to 500 bar, so I used NSGA-II, a multi-objective genetic algorithm, to map the trade-off.
+
+**Neural surrogates.** I scored 200,000 twin-screw designs with the physics model and trained three networks on them: an MLP, a graph neural network that treats the chambers as nodes and the leak paths as edges, and a CNN. I then optimised designs by gradient descent through the networks.
+
+<!-- Figure 4: deck sheet 29, the ladder GNN -->
+
+## Results
+
+All flows come from the physics models; comparison with machine data is a next step.
+
+- **Single screw:** 50x simulated flow (4 → 208 L/min). At 150 rpm the design overheats on 3.5% of the 343 rubbers; run slower, the same geometry stays under 100 °C on all of them, at a mean of about 132 L/min.
+- **Twin screw:** 2x the flow and 3x lower span than the baseline: a higher, flatter flow curve.
+- **Surrogates:** all three networks predict feasibility correctly over 99% of the time. They found designs at 2.1 L/min, where the NSGA-II front has none; at 2.0 L/min the front's best design stayed flatter.
+
+<!-- Figure 2: deck sheet 12, Differential Evolution against Particle Swarm Optimisation -->
+<!-- Figure 3: deck sheet 24, flow-pressure curves of the three twin-screw picks -->
+
+## Methods and tools
+
+Dynamic optimisation, evolutionary algorithms (Differential Evolution, NSGA-II), Particle Swarm Optimisation, multi-objective and robust optimisation, surrogate modelling, graph neural networks, CNNs, gradient-based design optimisation, code acceleration. Python, PyTorch, PyTorch Geometric.",,ML for Physical Systems;Optimisation & Control;Deep Learning,true,true,true,1,"Research internship, Michelin, Clermont-Ferrand, 2026",completed,,
+drone-swarm-rescue,Drone Swarm Rescue Challenge,"Multi-agent control for drone swarms in search and rescue, on real-world use cases from the French Ministry of Defence.",,,Reinforcement Learning;ML for Physical Systems,true,true,false,3,"Team challenge, IP Paris",ongoing,,
+rte-energy-uq,Uncertainty quantification for energy load disaggregation,"In collaboration with RTE and Enerthec, extending NILMFormer on building time-series data for civilian energy applications.",,,Trustworthy AI;ML for Physical Systems;Deep Learning,true,true,false,4,"With RTE and Enerthec, École Polytechnique",ongoing,,
+f1-rl,Model-based RL for Formula 1 racing lines,"A lap simulator learned from real F1 telemetry (4% lap-time error on held-out laps), with SAC agents trained in it lapping Monaco within 8% of the real pole time.","## In short
+
+I learned a lap-time simulator from real Formula 1 telemetry and trained reinforcement-learning agents inside it to find the racing line. The simulator's lap-time error is 4% on held-out laps, and the trained agent laps Monaco within 8% of the real pole time.
+
+## The problem
+
+Finding the fastest line round a circuit is a trajectory-optimisation problem. An agent can't learn it by trial and error on a real car, so it needs a simulator, and a simulator learned from data is only useful if it holds up on laps it has not seen.
+
+## What I did
+
+- Built the simulator from FastF1 telemetry. A five-network ensemble predicts the car's forward acceleration from speed, throttle, brake and lateral acceleration; cornering is capped by a grip limit fitted to the data; the track is the corridor real drivers used.
+- Trained Soft Actor-Critic agents (Stable-Baselines3) in the simulator over three seeds, and compared them with a classical lap-time optimiser running on the same physics.
+- Validated the simulator on held-out drivers, tested the policy against each member of the ensemble, and checked for states outside the training data.
+- Also ran other reinforcement-learning algorithms and other circuits.
+
+## Results
+
+- **Simulator:** 4% lap-time error on held-out laps, measured at Monza.
+- **Agent:** within 8% of the real pole time at Monaco, and about 8% off pole at Monza.
+- The classical optimiser is faster than the agent in the same simulator.
+
+## Methods and tools
+
+Reinforcement learning, Soft Actor-Critic, learned dynamics models, deep ensembles, simulator validation, trajectory optimisation. Python, FastF1, Stable-Baselines3.",,Reinforcement Learning;ML for Physical Systems;Deep Learning,true,true,false,5,"Personal project, 2026",completed,,
+visualearn,VisuaLearn,"A Python library for teaching machine learning: it turns a dataset or a scikit-learn model into one annotated, captioned figure that shows what the model is doing.","## In short
+
+VisuaLearn is a Python library to help visualise and teach basic machine learning. It draws what a scikit-learn model is doing: each function takes a dataset or a model and returns one annotated matplotlib figure, with a plain-English caption saying what to look for.
+
+## Why
+
+A score tells a student how well a model did, not what it learned. A picture of the decision boundary, or of a learning curve that has started to overfit, shows it directly.
+
+## What it does
+
+- 17 functions across the workflow: exploring data, comparing models, watching training, tuning and evaluation.
+- Decision boundaries with misclassified points circled, learning curves with a verdict on overfitting, a decision tree drawn as a flowchart, ROC curves and cross-validated model comparisons.
+- Data with more than two features goes through PCA before it is drawn, and the caption says so.
+- Three animations: a decision boundary forming epoch by epoch, gradient descent across a loss surface, and k-means converging.
+
+## Testing
+
+27 smoke tests cover every public function and pass on Python 3.8 and 3.10. MIT licence.
+
+## Methods and tools
+
+Python, scikit-learn, matplotlib, NumPy, PCA, data visualisation.",,Classical ML;Software & Tools,true,false,false,6,"Personal project, 2026",completed,,
+nasa-turbofan,NASA turbofan predictive maintenance,Failure prediction for turbofan engines from NASA's C-MAPSS run-to-failure sensor data.,,,ML for Physical Systems,true,false,false,7,"Hi! Paris Data Boot Camp and hackathon, IP Paris and HEC",completed,,
+protein-ion-channels,Protein ion-channel classification,"Classifying ion-channel proteins from their sequences with ESM-2 and ProtBERT embeddings, reaching a best accuracy of 97.26%. My part was model development and experimentation.","## In short
+
+A team project that classifies ion-channel proteins from their amino-acid sequences, using embeddings from two protein language models, ESM-2 and ProtBERT. The best model reached 97.26% accuracy. My part was model development and experimentation.
+
+## The problem
+
+Ion channels are proteins that let ions cross cell membranes, and they matter in medicine and drug discovery. The task is to classify them from the amino-acid sequence alone, without lab measurements of their structure or function.
+
+## What I did
+
+I developed the classification models and ran the experiments. They build on ESM-2 and ProtBERT, protein language models that turn each sequence into a vector learned from very large collections of known proteins, so the classifier starts from a rich description of the sequence rather than from hand-built features.
+
+## Results
+
+A best accuracy of 97.26%, ahead of traditional feature-extraction methods.
+
+## Methods and tools
+
+Protein language models, ESM-2, ProtBERT, sequence embeddings, transfer learning, classification.",,Deep Learning;Health & Biomedicine,true,false,false,8,Team project,completed,,
+actor-embedded-fqi,Actor-embedded fitted Q-iteration,"A review of fitted Q-iteration for power-system control, and a proposed variant that uses an actor network to avoid a costly search over actions. Theory only.","Course project for **CSC_52073_EP Optimisation and Responsible AI (2026)** at **École Polytechnique**, with one classmate.
+
+## In short
+
+We reviewed fitted Q-iteration, the batch reinforcement-learning method that Ernst et al. (2005) applied to power-system control, and proposed a variant, actor-embedded fitted Q-iteration, that replaces a costly search over actions with an actor network. The work is theoretical: nothing was implemented or run.
+
+## The problem
+
+Fitted Q-iteration turns reinforcement learning into a sequence of supervised regression problems over recorded transitions. At every iteration, each training target needs the best next action, which means a maximisation over the action space for every sample. That cost grows quickly and makes the method impractical for large or continuous action spaces.
+
+## What we proposed
+
+An actor network learns to propose the best action from the current Q-function, so the per-sample search goes away. Because it maps states to actions rather than state-action pairs to values, it can be trained on a smaller set of anchor states. We gave a complexity argument for when this is cheaper. The variant comes with no convergence guarantee.
+
+## Methods and tools
+
+Batch reinforcement learning, fitted Q-iteration, approximate dynamic programming, actor-critic methods, power-system control.",,Reinforcement Learning;Optimisation & Control,true,false,false,9,"Course project, École Polytechnique, 2026",completed,,
+end-frame-video-diffusion,Generating the past: end-frame video diffusion,Fine-tuning a video diffusion model to generate the events that lead up to a given last frame; an exploratory proof of concept with qualitative results.,"Course project for **Multimodal Generative AI (2026)** at **École Polytechnique**, with one classmate.
+
+## In short
+
+Video diffusion models generate forwards in time from a first frame. We fine-tuned one to work backwards: given the last frame of a scene, it generates the events leading up to it. The results are qualitative, and we present the work as an exploratory proof of concept.
+
+## The problem
+
+A model trained on ordinary video learns the arrow of time: objects fall, glass shatters. Asked to reach a given end frame, a forward model drifts away from it, and asked to play events in reverse, it struggles with actions that cannot be undone. Generating from the end frame would allow event reconstruction: showing how a scene could have come to look the way it does.
+
+## What we did
+
+- Fine-tuned the LTX-Video diffusion model with LoRA (rank 32) on about 12,800 clips from the Something-Something dataset: six gravity-related classes, with time-reversed copies.
+- Trained on a single 20 GB GPU.
+
+## Results
+
+Three demonstration videos show the model generating, in reverse order, events that end at a given frame. There is no quantitative evaluation.
+
+## Methods and tools
+
+Video diffusion, LoRA fine-tuning, image-to-video generation, generative AI.",,Generative AI;Deep Learning,true,false,false,10,"Course project, École Polytechnique, 2026",completed,,
+decentralised-privacy,Decentralised privacy in trust-based clusters,"Two protocols for differential privacy in decentralised learning when users trust their own cluster, with analytical bounds on noise and privacy loss. Theory only.","Course project for **Emerging Topics in Machine Learning (2025)** at **École Polytechnique**, with three classmates.
+
+## In short
+
+When users learn together without a central server, decentralisation itself can protect privacy. We extended a result of Cyffers and Bellet (2022) to users grouped in clusters they trust, with two new protocols and analytical bounds on their noise and privacy loss. The work is theoretical, with no experiments.
+
+## The problem
+
+In this setting, a token passes from user to user, and each user adds noise to their contribution so that others cannot recover it. The original paper shows that passing the token at random amplifies privacy. In many real settings, though, users trust their direct neighbours more than distant peers, for example inside one organisation.
+
+## What we proposed
+
+- **Clustered Ring Walk:** users within a trusted cluster are visited in a fixed order, so their contributions can be aggregated before noise is added.
+- **Stochastic Random Walk:** the order inside each cluster is random, with no fixed routing.
+
+Both keep a random walk between clusters, so the original amplification argument still applies.
+
+## Results
+
+Analytical bounds on noise and privacy loss for both protocols. For the same privacy budget, aggregating within clusters reduces the noise that has to be injected. The analysis assumes clusters of similar size.
+
+## Methods and tools
+
+Differential privacy, network differential privacy, decentralised and federated learning, privacy amplification, random walks.",,Trustworthy AI,true,true,false,11,"Course project, École Polytechnique, 2025",completed,,
+polarised-perspectives,Polarised Perspectives,"An agent-based simulation of rival political WhatsApp campaigns on a network of 200 citizens, testing which campaign lever matters most; persuasiveness came out strongest.","Course project for **MATH231 Modeling for Social Sciences (2024)** at **FLAME University, Pune**, taught by **Professor Santosh Kudtarkar**. The full write-up is on my [writing page](/blog/polarised-perspectives/).
+
+## In short
+
+A simulation of two rival political campaigns spreading through WhatsApp forwards. On a network of 200 citizens and partisan influencers, I tested which campaign lever matters most: a more persuasive message won the whole population over fastest.
+
+## The problem
+
+WhatsApp is India's most widely used messaging app, and political campaigns use forwarded messages to sway voters. The model asks what makes such a campaign succeed against a rival one.
+
+## What I did
+
+- Built an agent-based threshold model: a citizen joins a side once the net persuasion they receive passes their own susceptibility, then forwards that side's message to their contacts.
+- Tuned the model's parameters with Optuna to find settings that split the population evenly.
+- Raised one parameter of one campaign at a time by 20% and tracked how allegiances changed.
+
+## Results
+
+A more persuasive message converted the entire population in 8 time steps, against 12 for adding influencers. Giving influencers more connections did not win everyone over (163 against 13, with 24 still neutral). These are single runs; firm conclusions need many trials.
+
+## Methods and tools
+
+Agent-based modelling, network science, opinion dynamics, simulation, Bayesian optimisation (Optuna). Python, NetworkX.",https://github.com/madhav-gupta-ai/Polarised-Perspectives,Social Science,true,false,false,12,"Course project, FLAME University, 2024",completed,,/blog/polarised-perspectives/
+zero-shot-clinical-notes,Zero-shot clinical note scoring,"Scoring clinical patient notes against an exam rubric with no model training: a biomedical QA model finds the evidence and sentence embeddings check it. Accuracy 0.62, F1 0.68.","Course project for **DTSC422 Natural Language Processing (2024)** at **FLAME University, Pune**, taught by **Professor Harish Karnick**.
+
+## In short
+
+Medical exams grade a student's clinical patient note against a rubric of features it should mention. I built a zero-shot method that scores notes with no model training: a biomedical question-answering model finds the evidence, and sentence embeddings check it. It reached an accuracy of 0.62 and an F1 score of 0.68.
+
+## The problem
+
+The task comes from the NBME Score Clinical Patient Notes challenge on Kaggle: for each rubric feature, decide whether a note mentions it. Trained models score higher, but they need annotated notes and are hard to explain. I aimed for a method that trains no model and whose every decision can be read.
+
+## What I did
+
+- Asked a BioBERT model fine-tuned for question answering ""Is there {feature}?"", with the note as context, to find the most likely passage.
+- Embedded the passage with a sentence-embedding model (SGPT) and kept it only if it was closer to ""There is {feature}."" than to ""There is no {feature}.""
+- Tuned a similarity threshold for each rubric feature on the annotated notes.
+
+## Results
+
+Accuracy 0.62 and F1 0.68 on feature classification. Precision was much higher than recall: the method seldom flagged a feature that was absent, but missed some that were present.
+
+## Methods and tools
+
+Clinical NLP, zero-shot learning, extractive question answering, BioBERT, sentence embeddings, Python, Hugging Face Transformers.",https://github.com/madhav-gupta-ai/Score-Clinical-Patient-Notes,NLP;Health & Biomedicine,true,false,false,13,"Course project, FLAME University, 2024",completed,,
+ai-movie-dubbing,AI movie dubbing,"A pipeline to subtitle films and dub them into English in the original actors' voices. My part was voice extraction; its noise classifier reached 73.95% accuracy, up from 69.30%.","Course project for **CSIT431 Advanced Machine Learning (2023)** at **FLAME University, Pune**, taught by **Professor Santosh Kudtarkar**.
+
+## In short
+
+With two classmates, I built a pipeline that subtitles films and dubs them into English in the original actors' voices. My part was voice extraction: separating speech from background noise and music, so the rest of the pipeline works on clean dialogue. A redesign raised my noise classifier's test accuracy from 69.30% to 73.95%.
+
+## The pipeline
+
+1. **Voice extraction** (my part): remove environmental noise and background music.
+2. **Transcription and translation:** Whisper transcribes the speech, and the subtitles are translated into English.
+3. **Voice cloning:** Tortoise TTS and Tacotron 2 speak the English lines in each actor's voice.
+
+## What I did
+
+- Trained a classifier on UrbanSound8K, a dataset of ten everyday noise types such as car horns, drilling and sirens, to recognise the noise in a recording.
+- Passed its prediction to spectral noise reduction, which removes that noise from the audio.
+- Ran the result through Spleeter to separate the remaining speech from music.
+
+## Results
+
+The noise classifier's test accuracy rose from 69.30% to 73.95% after a redesign of the network. On a test clip with several speakers over background music, the pipeline produced a voice-only track. The project reports no end-to-end measure of dubbing quality.
+
+## Methods and tools
+
+Speech and audio ML, noise classification, spectral gating, source separation, speech recognition, voice cloning, text-to-speech. Python, Spleeter, Whisper, Tortoise TTS, Tacotron 2.",https://github.com/madhav-gupta-ai/voice-extractor,Deep Learning;Generative AI;NLP,true,false,false,14,"Course project, FLAME University, 2023",completed,,
+matrix-cipher,matrix-cipher,"A from-scratch, four-layer matrix cipher for text and files that detects tampering; pure Python, packaged as a library and a command-line tool.","Course project for **CSIT303 Fundamentals of Computer Security (2022)** at **FLAME University, Pune**.
+
+## In short
+
+matrix-cipher is a from-scratch encryption tool: a four-layer matrix cipher for text and files that also detects a corrupted or tampered message. It is a teaching project, not a secure cipher. It has not been cryptanalysed and should not protect real data.
+
+## How it works
+
+The plaintext is packed into a square matrix, then shuffled (row and column permutations), delta-encoded, substituted and sealed with a checksum, so anyone can check a message's integrity without the key.
+
+There are two modes:
+
+- **Keyed** (the default): a password, from which every shuffle order and substitution stream is derived through SHA-256 and a per-message salt. It works on any bytes, and a wrong key is detected.
+- **Keyless** (the original course version): the shuffle orders are hidden inside the matrix, and it handles text only. It stays in the tool to show why embedding the key in the ciphertext is obfuscation, not encryption.
+
+## Engineering
+
+Pure Python with no dependencies, installed as a library (`matrixcipher`) and a command-line tool (`matrix-cipher`). 23 unit tests and a harness of 16 input categories all pass, and keyed mode handles 1 MB in 1-2 seconds each way.
+
+## Methods and tools
+
+Cryptography, encryption, integrity checking, key derivation, Python packaging, command-line tools, testing.",https://github.com/madhav-gupta-ai/matrix-cipher,Software & Tools,true,false,false,15,"Course project, FLAME University, 2022",completed,,
+wine-quality-analysis,Statistical Analysis of Wine Quality,"Exploratory multivariate analysis of 6,497 wines in R — regression, ANOVA, PCA, and factor analysis — with 92.4% colour-classification accuracy.","Conducted exploratory multivariate analysis of a 6,497-sample Wine Quality dataset using linear regression, ANOVA, PCA, and factor analysis.
+
+Identified key quality predictors and classified wines by colour with 92.4% logistic-regression accuracy.",,R;Statistics;PCA;Regression,false,true,false,4,,,,
