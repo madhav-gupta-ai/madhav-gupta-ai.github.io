@@ -35,13 +35,12 @@ const experience = [
     org: 'Michelin',
     where: 'Clermont-Ferrand, France',
     dates: 'Mar 2026 - Sep 2026',
-    summary:
-      'Research internship in the EXPLORE team (Industry 4.0, Department of Manufacturing), applying machine learning to tyre manufacturing.',
+    summary: 'Research internship in the EXPLORE team, on machine learning for tyre manufacturing.',
     link: { href: '/projects/michelin-extruder-screws/', label: 'How the work was done →' },
     points: [
-      'Dynamic optimisation of extruder screws with genetic algorithms, 50x simulated flow (4 → 208 L/min).',
-      'Made the extrusion simulator 125x faster, cutting a design search from over 8 hours to 4 minutes.',
-      'Trained neural surrogates (GNN, CNN) on 200,000 designs for gradient-based design optimisation.',
+      'Dynamic optimisation of extruder screws: 50x simulated flow (4 → 208 L/min).',
+      'Made the simulator 125x faster, cutting a design search from over 8 hours to 4 minutes.',
+      'Trained neural surrogates (GNN, CNN) on 200,000 designs for gradient-based search.',
       'A+ for the research internship, École Polytechnique.',
     ],
   },
@@ -53,30 +52,30 @@ const experience = [
     summary: 'Six months of research after my degree.',
     link: { href: '/research', label: 'See the publications →' },
     points: [
-      'Authored 4 first-author papers, co-authored 3 more, and presented at international conferences.',
+      'Authored 4 first-author papers, co-authored 3 more, and presented at conferences.',
       'Research in scientific modelling and optimal control for industrial chemical reactors.',
     ],
   },
-  {
-    role: 'Student Research Assistant',
-    org: 'FLAME University',
-    where: 'Pune, India',
-    dates: 'Sep 2023 - Dec 2023',
-    summary:
-      'Reviewed machine-learning methods for Local Climate Zone classification for urban heat islands in India, and identified the open problem: no large-scale, generalisable classifier exists.',
-    points: [],
-  },
+  // {
+  //   role: 'Student Research Assistant',
+  //   org: 'FLAME University',
+  //   where: 'Pune, India',
+  //   dates: 'Sep 2023 - Dec 2023',
+  //   summary:
+  //     'Reviewed machine-learning methods for Local Climate Zone classification for urban heat islands in India, and identified the open problem: no large-scale, generalisable classifier exists.',
+  //   points: [],
+  // },
   {
     role: 'AI and Machine Learning Intern',
     org: 'Wadhwani AI',
     where: 'Delhi, India',
     dates: 'Jun 2023 - Aug 2023',
     summary:
-      "Media-based disease surveillance for the Government of India's Integrated Disease Surveillance Programme.",
+      "Event extraction from news for the Government of India's disease-surveillance programme.",
     points: [
-      'Extended the event-extraction pipeline from article titles to full article text; one approach found 108% more new events on the test articles.',
-      'Benchmarked web content extractors on 1,980 pages in 11 languages; parallel extraction cut the time per 100 articles from 330 s to 95 s.',
-      'Compared BERT, RoBERTa and XLM-R tokenisers on Indian languages; XLM-R handled them best.',
+      'Extended event extraction from article titles to full text: up to 108% more new events.',
+      'Benchmarked web extractors in 11 languages and cut extraction time from 330 s to 95 s.',
+      'Compared BERT, RoBERTa and XLM-R tokenisers on Indian languages; XLM-R did best.',
     ],
   },
   {
@@ -84,24 +83,23 @@ const experience = [
     org: 'PNTF Lab, the University of Alabama',
     where: 'Remote',
     dates: 'May 2022 - Jul 2022',
-    summary:
-      'Summer research internship in satellite navigation with the Precision, Navigation, Timing and Frequency Lab.',
+    summary: 'Summer research internship in satellite navigation.',
     points: [
-      'Wrote, from scratch, a Python algorithm that locates a GPS receiver from raw satellite navigation data.',
-      "Checked it against the IISc Bangalore station: the computed position fell a few metres from the station's true coordinates.",
+      'Wrote a Python algorithm from scratch to locate a GPS receiver from raw satellite data.',
+      'Tested on the IISc Bangalore station: within a few metres of the true coordinates.',
     ],
   },
-  {
-    role: 'ML Trainee (one-to-one)',
-    org: 'FLAME University',
-    where: 'Pune, India',
-    dates: 'Nov 2021 - Apr 2022',
-    summary: 'Machine-learning training with a faculty mentor, as the sole trainee.',
-    points: [
-      'Implemented decision trees, linear and logistic regression and random forests from scratch.',
-      'Studied and implemented the Black Hole feature selection algorithm.',
-    ],
-  },
+  // {
+  //   role: 'ML Trainee (one-to-one)',
+  //   org: 'FLAME University',
+  //   where: 'Pune, India',
+  //   dates: 'Nov 2021 - Apr 2022',
+  //   summary: 'Machine-learning training with a faculty mentor, as the sole trainee.',
+  //   points: [
+  //     'Implemented decision trees, linear and logistic regression and random forests from scratch.',
+  //     'Studied and implemented the Black Hole feature selection algorithm.',
+  //   ],
+  // },
 ];
 
 const education = [
@@ -111,8 +109,8 @@ const education = [
     where: 'Palaiseau, France',
     dates: '2025 - 2027',
     points: [
-      'Coursework: Deep RL, Constrained RL, Optimisation for AI, Explainable AI, Verification of Neural Networks.',
-      'M1 GPA 3.98, first quartile.',
+      'Coursework: Deep RL, Constrained RL, Optimisation for AI, Explainable AI.',
+      'M1 GPA 3.98 (first quartile), on track for summa cum laude in 2027.',
     ],
   },
   {
@@ -122,8 +120,8 @@ const education = [
     dates: '2020 - 2024',
     points: [
       "Dean's Roll of Honour for Academic Excellence.",
-      'Honours thesis: Detecting Depression in Text using Word Embeddings.',
-      'Fourth-year dissertation: A Hybridized Filtering-based Deep Contrastive Learning Model for Music Recommendation.',
+      'Honours thesis on detecting depression in text with word embeddings.',
+      'Fourth-year dissertation on deep contrastive learning for music recommendation.',
     ],
   },
 ];
@@ -131,32 +129,20 @@ const education = [
 const activities = [
   // awards
   { title: 'Best Paper Award (3rd place), ICDMAI 2026', text: 'For the minority-class oversampling paper.' },
-  { title: 'A+ for the Michelin research internship', text: 'École Polytechnique, 2026.' },
   // activities
   { title: 'Founding Member, IEEE Polytechnique', text: 'Co-founded the IEEE student chapter at École Polytechnique (X-IEEE) in 2025.' },
   { title: 'Class Representative, École Polytechnique', text: 'Represented the Trustworthy and Responsible AI cohort to Polytechnique leadership.' },
   { title: 'Adopt AI Hackathon (selected)', text: 'Disinformation and Democratic Sovereignty challenge, run by the French Presidency.' },
-  { title: 'Co-founder, DotSlash Tech Club, FLAME', text: "Executive committee member of FLAME's first official tech club." },
+  { title: 'Co-founder, DotSlash Tech Club, FLAME', text: "Executive member of FLAME's first official tech club." },
   { title: 'Elected President, Philosophy Club, FLAME', text: 'Led a team of 15-20 and ran over 10 events.' },
-  { title: 'Student Tutor, FLAME Q-Center', text: 'Linear algebra, Python and machine learning.' },
-  { title: 'Invited Speaker, FLAME', text: 'Undergraduate seminar series.' },
 ];
 
 const skills = [
-  'Python',
-  'PyTorch',
-  'C++',
-  'TensorFlow',
-  'Java',
-  'scikit-learn',
-  'NumPy',
-  'HF Transformers',
-  'SciPy',
-  'Gymnasium',
-  'Pandas',
-  'Linux',
-  'Git',
-  'Docker',
+  { group: 'Programming', items: ['Python', 'C++', 'Java'] },
+  { group: 'Machine learning', items: ['PyTorch', 'TensorFlow', 'scikit-learn', 'HF Transformers', 'Gymnasium'] },
+  { group: 'Libraries and tools', items: ['NumPy', 'SciPy', 'Pandas', 'Linux', 'Git', 'Docker'] },
+  { group: 'Languages', items: ['English (native)', 'Hindi (native)', 'French (B2)'] },
+  { group: 'Interests', items: ['Philosophy', 'Photography', 'Football', 'Formula 1'] },
 ];
 ---
 
@@ -164,16 +150,38 @@ const skills = [
   <div class="container">
     <!-- ============ HERO ============ -->
     <section class="hero">
-      <p class="kicker mono reveal visible">Hi, my name is</p>
-      <h1 class="reveal visible">{site.name}.</h1>
-      <p class="hero-sub reveal visible">{site.tagline}</p>
-      <p class="hero-blurb reveal visible">
-        I'm a master's student in trustworthy AI at
-        <a href="https://www.polytechnique.edu/en" target="_blank" rel="noopener">École Polytechnique</a>
-        and a former deep learning intern at
-        <a href="https://www.michelin.com/en" target="_blank" rel="noopener">Michelin</a>.
-        I'm looking for a research internship from April 2027.
-      </p>
+      <div class="hero-text">
+        <p class="kicker mono reveal visible" data-type>Hi, my name is</p>
+        <h1 class="reveal visible" data-type>{site.name}.</h1>
+        <p class="hero-sub reveal visible" data-type>{site.tagline}.</p>
+        <p class="hero-blurb reveal visible">
+          M2 student in trustworthy AI at
+          <a href="https://www.polytechnique.edu/en" target="_blank" rel="noopener">École Polytechnique</a>.
+          Former deep learning intern at
+          <a href="https://www.michelin.com/en" target="_blank" rel="noopener">Michelin</a>.
+          Seeking a research internship in AI and machine learning from April 2027.
+        </p>
+      </div>
+      <div class="portrait hero-portrait">
+        <img
+          src="/images/portrait.jpg"
+          alt="Madhav Gupta, smiling, in round glasses and a white T-shirt."
+          width="743"
+          height="743"
+          loading="eager"
+        />
+        <svg class="border-trace" viewBox="0 0 300 300" aria-hidden="true">
+          <defs>
+            <radialGradient id="trace-grad-hero" gradientUnits="userSpaceOnUse" cx="150" cy="150" r="212">
+              <stop offset="0" style="stop-color: var(--glow)" stop-opacity="0.05"></stop>
+              <stop offset="0.7" style="stop-color: var(--glow)" stop-opacity="0.3"></stop>
+              <stop offset="1" style="stop-color: var(--glow)" stop-opacity="0.8"></stop>
+            </radialGradient>
+          </defs>
+          <path pathLength="1000" d="M 4.23 4.23 A 2.5 2.5 0 0 1 6 3.5 H 294 A 2.5 2.5 0 0 1 296.5 6 V 294 A 2.5 2.5 0 0 1 295.77 295.77" />
+          <path pathLength="1000" d="M 295.77 295.77 A 2.5 2.5 0 0 1 294 296.5 H 6 A 2.5 2.5 0 0 1 3.5 294 V 6 A 2.5 2.5 0 0 1 4.23 4.23" />
+        </svg>
+      </div>
       <div class="hero-cta reveal visible">
         <a class="btn btn-lg" href="#featured">See my work</a>
       </div>
@@ -185,45 +193,39 @@ const skills = [
       <div class="about-grid">
         <div class="about-text reveal">
           <p>
-            Most of my work uses machine learning on physical systems: chemical reactors,
-            tyre extruders, Formula 1 racing lines.
+            I work on machine learning for physical and industrial systems: learning how a process
+            behaves, then optimising and controlling it. So far that has meant chemical reactors,
+            tyre extruders at <a href="/projects/michelin-extruder-screws/">Michelin</a> and racing cars.
           </p>
           <p>
-            At <a href="https://www.michelin.com/en" target="_blank" rel="noopener">Michelin</a>,
-            I spent seven months making an extrusion simulator 125x faster, then used it to find
-            a screw design with 50 times the simulated flow. Before Polytechnique, I studied
-            computer science at FLAME University in India, where I wrote my first research papers.
+            My main interests are reinforcement learning,
+            <a href="/projects/physics-informed-world-models/">world models</a> and optimal control,
+            along with scientific modelling: physics-informed methods that start from known equations
+            instead of data alone.
           </p>
           <p>
-            Outside work: philosophy, photography, football and Formula 1.
+            At École Polytechnique, I study
+            <a href="https://programmes.polytechnique.edu/en/master/all-msct-specializations/trustworthy-and-responsible-ai-trai-x-bocconi" target="_blank" rel="noopener">trustworthy AI</a>:
+            how to make learned systems reliable, through uncertainty quantification, privacy,
+            explainability, robustness and verification.
           </p>
-          <p>Tools I work with:</p>
-          <ul class="skills mono">
-            {skills.map((s) => <li>{s}</li>)}
-          </ul>
+          <p>
+            Seeking an end-of-studies internship for April 2027.
+          </p>
         </div>
-        <div class="portrait reveal">
-          <img
-            src="/images/portrait.jpg"
-            alt="Madhav Gupta, smiling, in round glasses and a white T-shirt."
-            width="743"
-            height="743"
-            loading="eager"
-          />
-          <svg class="border-trace" viewBox="0 0 300 300" aria-hidden="true">
-            <defs>
-              <radialGradient id="trace-grad" gradientUnits="userSpaceOnUse" cx="150" cy="150" r="212">
-                <stop offset="0" style="stop-color: var(--glow)" stop-opacity="0.05"></stop>
-                <stop offset="0.7" style="stop-color: var(--glow)" stop-opacity="0.3"></stop>
-                <stop offset="1" style="stop-color: var(--glow)" stop-opacity="0.8"></stop>
-              </radialGradient>
-            </defs>
-            <!-- two half-perimeter paths starting exactly at the TL and BR corner apexes,
-                 traced 3.5 inside the photo edge (r=2.5 parallel of the 6px corner) so the
-                 7px stroke hugs the frame with no uncovered corner wedge -->
-            <path pathLength="1000" d="M 4.23 4.23 A 2.5 2.5 0 0 1 6 3.5 H 294 A 2.5 2.5 0 0 1 296.5 6 V 294 A 2.5 2.5 0 0 1 295.77 295.77" />
-            <path pathLength="1000" d="M 295.77 295.77 A 2.5 2.5 0 0 1 294 296.5 H 6 A 2.5 2.5 0 0 1 3.5 294 V 6 A 2.5 2.5 0 0 1 4.23 4.23" />
-          </svg>
+        <div class="about-skills reveal">
+          {
+            skills.map((g) => (
+              <div class="skill-group">
+                <h3 class="mono">{g.group}</h3>
+                <ul class="skills mono">
+                  {g.items.map((item) => (
+                    <li>{item}</li>
+                  ))}
+                </ul>
+              </div>
+            ))
+          }
         </div>
       </div>
     </section>
@@ -359,12 +361,94 @@ const skills = [
       <p class="contact-blurb reveal">
         I'm looking for a 6-8 month research internship from April 2027, in machine
         learning for physical and industrial systems or in trustworthy AI. If you have a
-        role or a project in mind, or a question about my work, email me.
+        role or a project in mind, or a question about my work, email me!
       </p>
-      <a class="btn btn-lg reveal" href={`mailto:${site.email}`}>Say Hello</a>
+      <a class="btn btn-lg reveal" href={`mailto:${site.email}`}>Say Hello :)</a>
     </section>
   </div>
 </Base>
+
+<script>
+  // Home intro sequence. Base.astro's head script decides whether it plays
+  // (html.intro); any click, key press or scroll skips to the end.
+  const root = document.documentElement;
+
+  if (root.classList.contains('intro')) {
+    const [kicker, name, sub] = document.querySelectorAll('.hero [data-type]');
+
+    let skipped = false;
+    let wake = () => {};
+    const sleep = (ms) =>
+      skipped
+        ? Promise.resolve()
+        : new Promise((resolve) => {
+            wake = resolve;
+            setTimeout(resolve, ms);
+          });
+    const skip = () => {
+      skipped = true;
+      wake();
+    };
+    const skipEvents = ['pointerdown', 'keydown', 'wheel'];
+    skipEvents.forEach((e) => addEventListener(e, skip, { passive: true }));
+
+    const cursor = document.createElement('span');
+    cursor.className = 't-cursor idle';
+    cursor.setAttribute('aria-hidden', 'true');
+
+    // split a line into typed + untyped spans (full text stays in the DOM)
+    const prep = (el) => {
+      const text = el.textContent.trim();
+      const done = document.createElement('span');
+      const rest = document.createElement('span');
+      rest.className = 't-rest';
+      rest.textContent = text;
+      el.replaceChildren(done, rest);
+      return { el, text, done, rest };
+    };
+
+    const type = async (line, count, ms) => {
+      line.done.after(cursor);
+      cursor.classList.remove('idle');
+      for (let i = 0; i < count; i++) {
+        line.done.textContent += line.rest.textContent[0];
+        line.rest.textContent = line.rest.textContent.slice(1);
+        await sleep(ms * (0.6 + Math.random() * 0.8));
+      }
+      cursor.classList.add('idle');
+    };
+
+    const lines = [prep(kicker), prep(name), prep(sub)];
+    lines[0].done.after(cursor);
+
+    (async () => {
+      await Promise.race([document.fonts.ready, sleep(400)]);
+      root.classList.add('intro-ready');
+      await sleep(350);
+
+      await type(lines[0], 3, 50); // "Hi,"
+      await sleep(350);
+      await type(lines[0], lines[0].text.length - 3, 50);
+      await sleep(320);
+      await type(lines[1], lines[1].text.length, 55);
+      await sleep(300);
+      await type(lines[2], lines[2].text.length, 36);
+      await sleep(650);
+
+      // the blurb first; then photo and button; then menu, rails and the sections below
+      root.classList.add('intro-blurb');
+      await sleep(900);
+      root.classList.add('intro-rest');
+      await sleep(2200);
+
+      cursor.remove();
+      lines.forEach((l) => (l.el.textContent = l.text));
+      root.classList.remove('intro', 'intro-ready', 'intro-blurb', 'intro-rest');
+      skipEvents.forEach((e) => removeEventListener(e, skip));
+      sessionStorage.setItem('introPlayed', '1');
+    })();
+  }
+</script>
 
 <style>
   .hero {
@@ -407,6 +491,128 @@ const skills = [
     margin-top: var(--space-xl);
   }
 
+  /* ---- home intro (classes on <html> are set in Base.astro's head script) ---- */
+  :global(html.intro:not(.intro-ready)) .hero [data-type] {
+    opacity: 0;
+  }
+
+  /* once the typing is done: the blurb first, then photo and button together */
+  :global(html.intro) .hero-blurb,
+  :global(html.intro) .hero-cta,
+  :global(html.intro) .hero-portrait {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  :global(html.intro.intro-blurb) .hero-blurb,
+  :global(html.intro.intro-rest) .hero-cta,
+  :global(html.intro.intro-rest) .hero-portrait {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* everything below the hero waits too (it can be in view on tall or zoomed-out screens) */
+  :global(html.intro) .section {
+    opacity: 0;
+  }
+
+  :global(html.intro.intro-rest) .section {
+    opacity: 1;
+    transition: opacity 0.5s ease 1.3s;
+  }
+
+  /* typed lines keep their full text in place; the untyped part is just invisible,
+     so nothing shifts while the cursor moves through */
+  .hero :global(.t-rest) {
+    visibility: hidden;
+  }
+
+  .hero :global(.t-cursor) {
+    position: relative;
+  }
+
+  .hero :global(.t-cursor)::after {
+    content: '';
+    position: absolute;
+    left: 0.12em;
+    top: 0.1em;
+    bottom: 0.1em;
+    width: 0.55em;
+    background: var(--accent);
+  }
+
+  .hero :global(.t-cursor.idle)::after {
+    animation: cursor-blink 0.9s steps(1) infinite;
+  }
+
+  @keyframes cursor-blink {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* hero photo: beside the text on desktop, between the blurb and the button on phones */
+  .hero-portrait {
+    width: 200px;
+    margin: var(--space-xl) 0 0;
+  }
+
+  @media (max-width: 1079px) {
+    /* leave room for the photo's offset frame (16px) above the button */
+    .hero-cta {
+      margin-top: calc(var(--space-xl) + 16px);
+    }
+  }
+
+  @media (min-width: 1080px) {
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 300px;
+      grid-template-rows: auto auto;
+      align-items: center;
+      column-gap: var(--space-xl);
+    }
+
+    .hero-text {
+      grid-area: 1 / 1;
+      align-self: end;
+    }
+
+    .hero-cta {
+      grid-area: 2 / 1;
+      align-self: start;
+    }
+
+    .hero-portrait {
+      grid-area: 1 / 2 / 3 / 3;
+      width: 300px;
+      margin: 0;
+    }
+  }
+
+  .hero-portrait .border-trace path {
+    stroke: url(#trace-grad-hero);
+  }
+
+  /* the photo arrives in its "hovered" state, then plays the pointer-leave
+     animation: the border rolls back in and the offset frame settles */
+  :global(html.intro:not(.intro-rest)) .hero-portrait .border-trace path {
+    stroke-dashoffset: -1010;
+  }
+
+  :global(html.intro:not(.intro-rest)) .hero-portrait::before {
+    transform: translate(-6px, -6px);
+  }
+
+  :global(html.intro.intro-rest) .hero-portrait .border-trace path {
+    transition-delay: 0.3s;
+  }
+
+  :global(html.intro.intro-rest) .hero-portrait::before {
+    transition-delay: 0.3s;
+  }
+
   .section {
     padding: var(--space-xl) 0;
   }
@@ -416,30 +622,50 @@ const skills = [
     margin-bottom: var(--space-lg);
   }
 
-  /* about */
+  /* about: text left, compact skills panel right (one column on phones) */
   .about-grid {
     display: grid;
-    grid-template-columns: 3fr 2fr;
-    gap: var(--space-xl);
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+    gap: var(--space-xl) var(--space-xxl);
     align-items: start;
+  }
+
+  .about-text p {
+    text-wrap: balance;
   }
 
   .about-text p + p {
     margin-top: var(--space-md);
   }
 
-  .about-text p:nth-last-child(2) {
-    margin-top: var(--space-lg);
+  .about-skills {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
   }
 
+  .skill-group h3 {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+
+  /* each group: label, then its items wrapped inline on one or two lines */
   .skills {
     list-style: none;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(140px, 200px));
-    gap: var(--space-sm) var(--space-md);
-    margin-top: var(--space-md);
+    margin-top: var(--space-xs);
     font-size: 0.8rem;
+    line-height: 1.9;
     color: var(--muted);
+    /* inline flow so a two-line group breaks evenly (3 + 3, not 5 + 1) */
+    text-wrap: balance;
+  }
+
+  .skills li {
+    display: inline-block; /* a break opportunity between items, none inside one */
+    margin-right: var(--space-sm);
   }
 
   .skills li::before {
@@ -648,6 +874,15 @@ const skills = [
   }
 
   @media (max-width: 768px) {
+    /* phones: the hero fills the screen below main's top padding (--space-xxxl), and its
+       content sits midway between the nav and the bottom edge; the bottom padding mirrors
+       the gap between the nav and main */
+    .hero {
+      min-height: calc(100vh - var(--space-xxxl));
+      min-height: calc(100svh - var(--space-xxxl));
+      padding: 0 0 var(--space-lg);
+    }
+
     /* pull the writing list slightly closer to its heading on phones */
     #writing :global(.section-heading) {
       margin-bottom: var(--space-lg);
@@ -655,11 +890,6 @@ const skills = [
 
     .about-grid {
       grid-template-columns: 1fr;
-    }
-
-    .portrait {
-      margin: var(--space-lg) auto 0;
-      max-width: 260px;
     }
 
     .exp {

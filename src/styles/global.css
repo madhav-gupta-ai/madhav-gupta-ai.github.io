@@ -173,6 +173,23 @@ a:hover {
   gap: var(--space-sm) var(--space-md);
 }
 
+/* ---- line endings: no orphaned last words on short blocks, tidier rag on prose ---- */
+.hero-blurb,
+.exp-summary,
+.exp li,
+.activities p,
+.contact-blurb,
+.card h3,
+.card p {
+  text-wrap: balance;
+}
+
+.about-text p,
+.prose p,
+.prose li {
+  text-wrap: pretty;
+}
+
 /* ---- scroll reveal (respects reduced motion) ---- */
 .reveal {
   opacity: 0;

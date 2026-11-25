@@ -92,6 +92,22 @@ const links = [
     box-shadow: var(--nav-shadow);
   }
 
+  /* home intro: the logo stays; the menu (and the phone bar) drops in after the hero text */
+  :global(html.intro) .nav-menu,
+  :global(html.intro) .nav-cta,
+  :global(html.intro) .nav-toggle {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+
+  :global(html.intro.intro-rest) .nav-menu,
+  :global(html.intro.intro-rest) .nav-cta,
+  :global(html.intro.intro-rest) .nav-toggle {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.5s ease 0.8s, transform 0.5s ease 0.8s;
+  }
+
   .menu-toggle-slot {
     display: contents;
   }

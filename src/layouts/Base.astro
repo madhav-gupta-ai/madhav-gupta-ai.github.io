@@ -26,6 +26,21 @@ const {
       document.documentElement.dataset.theme =
         localStorage.getItem('theme') ??
         (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+
+      // Home intro: flag <html> before first paint so the nav, rails and hero
+      // start hidden. The sequence itself runs in index.astro.
+      // Plays once per session; adding ?intro to the URL replays it.
+      (function () {
+        var root = document.documentElement;
+        if (location.pathname !== '/' || location.hash) return;
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        if (!/[?&]intro\b/.test(location.search) && sessionStorage.getItem('introPlayed')) return;
+        root.classList.add('intro');
+        // failsafe: never leave content hidden if the page script fails
+        setTimeout(function () {
+          root.classList.remove('intro');
+        }, 8000);
+      })();
     </script>
     <title>{title}</title>
     <meta name="description" content={description} />
@@ -129,6 +144,18 @@ const {
         .rail {
           display: flex;
         }
+      }
+
+      /* home intro: rails come in last */
+      :global(html.intro) .rail {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      :global(html.intro.intro-rest) .rail {
+        opacity: 1;
+        transform: none;
+        transition: opacity 0.5s ease 1.3s, transform 0.5s ease 1.3s;
       }
     </style>
   </body>

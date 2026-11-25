@@ -1,26 +1,31 @@
 id,title,card_text,details_md,code_url,keywords,visible,homepage,featured,order,context,status,pdf_url,link_url
-physics-informed-world-models,Physics-informed world models for control,"World models for control that start from known physics: an ODE core added to TD-MPC2, demonstrated on chemical reactors, fluid flow control, orbital mechanics and aerodynamics.","## In short
+physics-informed-world-models,Physics-informed world models for control,"World models for control that start from known physics: an ODE core in TD-MPC2, trained with high-fidelity solvers and demonstrated on chemical reactors, fluid flow control, orbital mechanics and aerodynamics.","## In short
 
-I'm building world models for control that start from known physics. I added an ODE core, the equations that describe how a system evolves, to TD-MPC2, a model-based reinforcement learning algorithm. With a rough physics model and a high-fidelity simulator, the world model can be trained without collected data. The project is ongoing, and I have demonstrated it on four domains: chemical reactors, fluid flow control, orbital mechanics and aerodynamics.
+I'm building world models for control that start from known physics. I added an ODE core, the equations that describe how a system evolves, to TD-MPC2, a model-based reinforcement learning algorithm. I then train the world model with high-fidelity solvers in place of collected data. The project is ongoing, and I have demonstrated it on four domains: chemical reactors, fluid flow control, orbital mechanics and aerodynamics.
 
 ## The problem
 
-Model-based reinforcement learning plans with a learned model of how a system responds to actions. Learning that model usually takes a lot of interaction data, which is slow, expensive or unsafe to collect on real physical systems. Yet for many of these systems, the governing equations are already known, at least roughly.
+Model-based reinforcement learning plans with a learned model of how a system responds to actions. Learning that model usually takes a lot of interaction data, which is slow, expensive or unsafe to collect on real physical systems. Yet for many of these systems, the governing equations are already known, at least roughly. A standard world model ignores them and learns the dynamics from scratch.
 
 ## The approach
 
-TD-MPC2 learns a latent world model and plans with it. I gave it an ODE core of known physics, so the model starts from the equations instead of learning the dynamics from scratch.
+TD-MPC2 learns a latent world model and plans with it. I changed where that model's knowledge comes from, in two ways.
+
+- **An ODE core.** A rough physics model of the system, written as ordinary differential equations, sits inside the world model. The model starts from these equations instead of learning them.
+- **High-fidelity solvers.** A detailed numerical solver of the same system provides what the world model trains on, in place of collected data.
+
+With both, the world model can be trained with no data from the real system.
 
 ## Where it stands
 
-Results will go on this page once they can be shared. The code is private for now.
+So far I have demonstrated the method on four domains: chemical reactors, fluid flow control, orbital mechanics and aerodynamics. In each, the governing equations are well known and trial and error on the real system is costly. The work is still in progress: results will go on this page once they can be shared, and the code is private for now.
 
 ## Methods and tools
 
-Model-based reinforcement learning, world models, TD-MPC2, physics-informed machine learning, ODE models, optimal control.",,Reinforcement Learning;Physics-Informed ML;Optimisation & Control;ML for Physical Systems,true,true,true,2,Personal research project,ongoing,,
-michelin-extruder-screws,Optimising extruder screws,"Dynamic optimisation of extruder screws for tyre manufacturing: 50x simulated flow (4 → 208 L/min), found on an extrusion simulator I made 125x faster.","## In short
+Model-based reinforcement learning, world models, TD-MPC2, model predictive control, physics-informed machine learning, ODE models, high-fidelity simulation, optimal control.",,Reinforcement Learning;Physics-Informed ML;Optimisation & Control;ML for Physical Systems,true,true,true,2,Personal research project,ongoing,,
+michelin-extruder-screws,Dynamic optimisation of extruder screws for tyre manufacturing,"50x simulated flow on a single-screw extruder (4 → 208 L/min) and 2x on a twin-screw extruder, found with genetic algorithms after I made the simulators up to 125x faster.","## In short
 
-In seven months at Michelin, I worked on the dynamic optimisation of extruder screws for tyre manufacturing. I made the extrusion simulator 125x faster, cutting a design search from over 8 hours to 4 minutes, and used evolutionary algorithms to find a single-screw design with 50x simulated flow (4 → 208 L/min). I then trained neural surrogates (GNN, CNN) on 200,000 designs for gradient-based design optimisation.
+In seven months at Michelin, I worked on the dynamic optimisation of extruder screws for tyre manufacturing, on both single-screw and twin-screw extruders. I made the single-screw simulator 125x faster, cutting a design search from over 8 hours to 4 minutes, and used evolutionary algorithms to find a design with 50x simulated flow (4 → 208 L/min). For the twin-screw extruder, I extended the physics model, made it about 30x faster, and used NSGA-II to find a design with 2x the flow and a 3x flatter flow curve. I then trained neural surrogates (GNN, CNN) on 200,000 twin-screw designs for gradient-based design optimisation.
 
 ## The problem
 
@@ -51,9 +56,9 @@ All flows come from the physics models; comparison with machine data is a next s
 
 ## Methods and tools
 
-Dynamic optimisation, evolutionary algorithms (Differential Evolution, NSGA-II), Particle Swarm Optimisation, multi-objective and robust optimisation, surrogate modelling, graph neural networks, CNNs, gradient-based design optimisation, code acceleration. Python, PyTorch, PyTorch Geometric.",,ML for Physical Systems;Optimisation & Control;Deep Learning,true,true,true,1,"Research internship, Michelin, Clermont-Ferrand, 2026",completed,,
+Dynamic optimisation, evolutionary algorithms (Differential Evolution, NSGA-II), Particle Swarm Optimisation, multi-objective and robust optimisation, surrogate modelling, graph neural networks, CNNs, gradient-based design optimisation, code acceleration. Python, PyTorch, PyTorch Geometric.",,ML for Physical Systems;Optimisation & Control,true,false,false,1,"Research internship, Michelin, Clermont-Ferrand, 2026",completed,,
 drone-swarm-rescue,Drone Swarm Rescue Challenge,"Multi-agent control for drone swarms in search and rescue, on real-world use cases from the French Ministry of Defence.",,,Reinforcement Learning;ML for Physical Systems,true,true,false,3,"Team challenge, IP Paris",ongoing,,
-rte-energy-uq,Uncertainty quantification for energy load disaggregation,"In collaboration with RTE and Enerthec, extending NILMFormer on building time-series data for civilian energy applications.",,,Trustworthy AI;ML for Physical Systems;Deep Learning,true,true,false,4,"With RTE and Enerthec, École Polytechnique",ongoing,,
+rte-energy-uq,Uncertainty quantification for energy load disaggregation,"In collaboration with RTE and Enerthec, extending NILMFormer on building time-series data for civilian energy applications.",,,Trustworthy AI & Society;ML for Physical Systems,true,true,false,4,"With RTE and Enerthec, École Polytechnique",ongoing,,
 f1-rl,Model-based RL for Formula 1 racing lines,"A lap simulator learned from real F1 telemetry (4% lap-time error on held-out laps), with SAC agents trained in it lapping Monaco within 8% of the real pole time.","## In short
 
 I learned a lap-time simulator from real Formula 1 telemetry and trained reinforcement-learning agents inside it to find the racing line. The simulator's lap-time error is 4% on held-out laps, and the trained agent laps Monaco within 8% of the real pole time.
@@ -77,7 +82,7 @@ Finding the fastest line round a circuit is a trajectory-optimisation problem. A
 
 ## Methods and tools
 
-Reinforcement learning, Soft Actor-Critic, learned dynamics models, deep ensembles, simulator validation, trajectory optimisation. Python, FastF1, Stable-Baselines3.",,Reinforcement Learning;ML for Physical Systems;Deep Learning,true,true,false,5,"Personal project, 2026",completed,,
+Reinforcement learning, Soft Actor-Critic, learned dynamics models, deep ensembles, simulator validation, trajectory optimisation. Python, FastF1, Stable-Baselines3.",,Reinforcement Learning;ML for Physical Systems,true,true,false,5,"Personal project, 2026",completed,,
 visualearn,VisuaLearn,"A Python library for teaching machine learning: it turns a dataset or a scikit-learn model into one annotated, captioned figure that shows what the model is doing.","## In short
 
 VisuaLearn is a Python library to help visualise and teach basic machine learning. It draws what a scikit-learn model is doing: each function takes a dataset or a model and returns one annotated matplotlib figure, with a plain-English caption saying what to look for.
@@ -99,7 +104,7 @@ A score tells a student how well a model did, not what it learned. A picture of 
 
 ## Methods and tools
 
-Python, scikit-learn, matplotlib, NumPy, PCA, data visualisation.",,Classical ML;Software & Tools,true,false,false,6,"Personal project, 2026",completed,,
+Python, scikit-learn, matplotlib, NumPy, PCA, data visualisation.",,Software & Tools,true,false,false,6,"Personal project, 2026",completed,,
 nasa-turbofan,NASA turbofan predictive maintenance,Failure prediction for turbofan engines from NASA's C-MAPSS run-to-failure sensor data.,,,ML for Physical Systems,true,false,false,7,"Hi! Paris Data Boot Camp and hackathon, IP Paris and HEC",completed,,
 protein-ion-channels,Protein ion-channel classification,"Classifying ion-channel proteins from their sequences with ESM-2 and ProtBERT embeddings, reaching a best accuracy of 97.26%. My part was model development and experimentation.","## In short
 
@@ -119,7 +124,33 @@ A best accuracy of 97.26%, ahead of traditional feature-extraction methods.
 
 ## Methods and tools
 
-Protein language models, ESM-2, ProtBERT, sequence embeddings, transfer learning, classification.",,Deep Learning;Health & Biomedicine,true,false,false,8,Team project,completed,,
+Protein language models, ESM-2, ProtBERT, sequence embeddings, transfer learning, classification.",,Health & Biomedicine,true,false,false,8,Team project,completed,,
+iris-hud,IRIS HUD: live open-set face recognition,"A smart-glasses-style display over a live webcam stream: it names known people and flags strangers, and adds emotions, live subtitles and object labels.","Course project for **CSC_51073 Image Analysis and Computer Vision (2025)** at **École Polytechnique**, with one classmate.
+
+## In short
+
+IRIS HUD is a heads-up display, in the style of smart glasses, that runs over a live webcam stream. It recognises the people it has been taught, labels everyone else as a stranger, and adds their emotion, live subtitles of what is being said, and the objects in view. We built it together, and its core is an open-set face recogniser trained with contrastive learning.
+
+## Face recognition
+
+- We collected a consented dataset of 920 photos of 10 people, plus 50 photos of strangers.
+- Each face is detected and aligned with RetinaFace, then embedded with a frozen FaceNet model.
+- A small Siamese network, trained with a contrastive loss, maps those embeddings so that photos of the same person sit close together. Each person gets a prototype, and a similarity threshold turns away anyone who matches no one, set so that strangers are wrongly accepted at most 5% of the time.
+- Optuna tuned the hyperparameters.
+
+## The live system
+
+- YOLOv8 finds faces in each frame, the FER library reads emotions, and Faster-Whisper, quantised to int8, writes live subtitles on a CPU.
+- A YOLOv8 model fine-tuned on the Dollar Street dataset (95 classes of everyday objects) labels what is in view.
+- Gaze-LLE estimates where a person is looking and which object they are looking at. It takes 0.5 to 1 second per face on a CPU, so it runs offline.
+
+## Results
+
+Averaged over five runs, our model recognised faces with 92.1% accuracy and a macro F1 of 93.1%, against 91.3% and 91.7% for the FaceNet baseline. The gain is small, on a small dataset. The object detector reached an mAP50 of 0.38 on held-out images: moderate overall, but strong on some classes such as glasses and watches.
+
+## Methods and tools
+
+Computer vision, open-set face recognition, contrastive learning, Siamese networks, FaceNet, RetinaFace, YOLOv8, object detection, gaze estimation, emotion recognition, speech-to-text, real-time inference, Optuna.",https://github.com/laiba12345/Smart-Glasses-Attention-Perception-System,Computer Vision,true,true,false,9,"Course project, École Polytechnique, 2025",completed,,
 actor-embedded-fqi,Actor-embedded fitted Q-iteration,"A review of fitted Q-iteration for power-system control, and a proposed variant that uses an actor network to avoid a costly search over actions. Theory only.","Course project for **CSC_52073_EP Optimisation and Responsible AI (2026)** at **École Polytechnique**, with one classmate.
 
 ## In short
@@ -136,7 +167,7 @@ An actor network learns to propose the best action from the current Q-function, 
 
 ## Methods and tools
 
-Batch reinforcement learning, fitted Q-iteration, approximate dynamic programming, actor-critic methods, power-system control.",,Reinforcement Learning;Optimisation & Control,true,false,false,9,"Course project, École Polytechnique, 2026",completed,,
+Batch reinforcement learning, fitted Q-iteration, approximate dynamic programming, actor-critic methods, power-system control.",,Reinforcement Learning;Optimisation & Control,true,false,false,10,"Course project, École Polytechnique, 2026",completed,,
 end-frame-video-diffusion,Generating the past: end-frame video diffusion,Fine-tuning a video diffusion model to generate the events that lead up to a given last frame; an exploratory proof of concept with qualitative results.,"Course project for **Multimodal Generative AI (2026)** at **École Polytechnique**, with one classmate.
 
 ## In short
@@ -158,7 +189,7 @@ Three demonstration videos show the model generating, in reverse order, events t
 
 ## Methods and tools
 
-Video diffusion, LoRA fine-tuning, image-to-video generation, generative AI.",,Generative AI;Deep Learning,true,false,false,10,"Course project, École Polytechnique, 2026",completed,,
+Video diffusion, LoRA fine-tuning, image-to-video generation, generative AI.",,Computer Vision,true,false,false,11,"Course project, École Polytechnique, 2026",completed,,
 decentralised-privacy,Decentralised privacy in trust-based clusters,"Two protocols for differential privacy in decentralised learning when users trust their own cluster, with analytical bounds on noise and privacy loss. Theory only.","Course project for **Emerging Topics in Machine Learning (2025)** at **École Polytechnique**, with three classmates.
 
 ## In short
@@ -182,7 +213,7 @@ Analytical bounds on noise and privacy loss for both protocols. For the same pri
 
 ## Methods and tools
 
-Differential privacy, network differential privacy, decentralised and federated learning, privacy amplification, random walks.",,Trustworthy AI,true,true,false,11,"Course project, École Polytechnique, 2025",completed,,
+Differential privacy, network differential privacy, decentralised and federated learning, privacy amplification, random walks.",,Trustworthy AI & Society,true,false,false,12,"Course project, École Polytechnique, 2025",completed,,
 polarised-perspectives,Polarised Perspectives,"An agent-based simulation of rival political WhatsApp campaigns on a network of 200 citizens, testing which campaign lever matters most; persuasiveness came out strongest.","Course project for **MATH231 Modeling for Social Sciences (2024)** at **FLAME University, Pune**, taught by **Professor Santosh Kudtarkar**. The full write-up is on my [writing page](/blog/polarised-perspectives/).
 
 ## In short
@@ -205,7 +236,7 @@ A more persuasive message converted the entire population in 8 time steps, again
 
 ## Methods and tools
 
-Agent-based modelling, network science, opinion dynamics, simulation, Bayesian optimisation (Optuna). Python, NetworkX.",https://github.com/madhav-gupta-ai/Polarised-Perspectives,Social Science,true,false,false,12,"Course project, FLAME University, 2024",completed,,/blog/polarised-perspectives/
+Agent-based modelling, network science, opinion dynamics, simulation, Bayesian optimisation (Optuna). Python, NetworkX.",https://github.com/madhav-gupta-ai/Polarised-Perspectives,Trustworthy AI & Society,true,false,false,13,"Course project, FLAME University, 2024",completed,,/blog/polarised-perspectives/
 zero-shot-clinical-notes,Zero-shot clinical note scoring,"Scoring clinical patient notes against an exam rubric with no model training: a biomedical QA model finds the evidence and sentence embeddings check it. Accuracy 0.62, F1 0.68.","Course project for **DTSC422 Natural Language Processing (2024)** at **FLAME University, Pune**, taught by **Professor Harish Karnick**.
 
 ## In short
@@ -228,7 +259,7 @@ Accuracy 0.62 and F1 0.68 on feature classification. Precision was much higher t
 
 ## Methods and tools
 
-Clinical NLP, zero-shot learning, extractive question answering, BioBERT, sentence embeddings, Python, Hugging Face Transformers.",https://github.com/madhav-gupta-ai/Score-Clinical-Patient-Notes,NLP;Health & Biomedicine,true,false,false,13,"Course project, FLAME University, 2024",completed,,
+Clinical NLP, zero-shot learning, extractive question answering, BioBERT, sentence embeddings, Python, Hugging Face Transformers.",https://github.com/madhav-gupta-ai/Score-Clinical-Patient-Notes,NLP;Health & Biomedicine,true,false,false,14,"Course project, FLAME University, 2024",completed,,
 ai-movie-dubbing,AI movie dubbing,"A pipeline to subtitle films and dub them into English in the original actors' voices. My part was voice extraction; its noise classifier reached 73.95% accuracy, up from 69.30%.","Course project for **CSIT431 Advanced Machine Learning (2023)** at **FLAME University, Pune**, taught by **Professor Santosh Kudtarkar**.
 
 ## In short
@@ -253,7 +284,7 @@ The noise classifier's test accuracy rose from 69.30% to 73.95% after a redesign
 
 ## Methods and tools
 
-Speech and audio ML, noise classification, spectral gating, source separation, speech recognition, voice cloning, text-to-speech. Python, Spleeter, Whisper, Tortoise TTS, Tacotron 2.",https://github.com/madhav-gupta-ai/voice-extractor,Deep Learning;Generative AI;NLP,true,false,false,14,"Course project, FLAME University, 2023",completed,,
+Speech and audio ML, noise classification, spectral gating, source separation, speech recognition, voice cloning, text-to-speech. Python, Spleeter, Whisper, Tortoise TTS, Tacotron 2.",https://github.com/madhav-gupta-ai/voice-extractor,NLP,true,false,false,15,"Course project, FLAME University, 2023",completed,,
 matrix-cipher,matrix-cipher,"A from-scratch, four-layer matrix cipher for text and files that detects tampering; pure Python, packaged as a library and a command-line tool.","Course project for **CSIT303 Fundamentals of Computer Security (2022)** at **FLAME University, Pune**.
 
 ## In short
@@ -275,7 +306,7 @@ Pure Python with no dependencies, installed as a library (`matrixcipher`) and a 
 
 ## Methods and tools
 
-Cryptography, encryption, integrity checking, key derivation, Python packaging, command-line tools, testing.",https://github.com/madhav-gupta-ai/matrix-cipher,Software & Tools,true,false,false,15,"Course project, FLAME University, 2022",completed,,
+Cryptography, encryption, integrity checking, key derivation, Python packaging, command-line tools, testing.",https://github.com/madhav-gupta-ai/matrix-cipher,Software & Tools,true,false,false,16,"Course project, FLAME University, 2022",completed,,
 wine-quality-analysis,Statistical Analysis of Wine Quality,"Exploratory multivariate analysis of 6,497 wines in R — regression, ANOVA, PCA, and factor analysis — with 92.4% colour-classification accuracy.","Conducted exploratory multivariate analysis of a 6,497-sample Wine Quality dataset using linear regression, ANOVA, PCA, and factor analysis.
 
 Identified key quality predictors and classified wines by colour with 92.4% logistic-regression accuracy.",,R;Statistics;PCA;Regression,false,true,false,4,,,,
